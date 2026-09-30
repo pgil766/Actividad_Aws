@@ -1,0 +1,14 @@
+$ python punto1_secrets_manager/leer_secreto.py eia/ingdata/secret
+Identidad: arn:aws:iam::807872461370:user/user_cli
+Región:    us-east-2
+Secreto:   eia/ingdata/secret
+No se pudo leer el secreto: AccessDeniedException
+User: arn:aws:iam::807872461370:user/user_cli is not authorized to perform: secretsmanager:GetSecretValue on resource: eia/ingdata/secret because no identity-based policy allows the secretsmanager:GetSecretValue action
+
+$ aws secretsmanager list-secrets
+
+aws: [ERROR]: An error occurred (AccessDeniedException) when calling the ListSecrets operation: User: arn:aws:iam::807872461370:user/user_cli is not authorized to perform: secretsmanager:ListSecrets because no identity-based policy allows the secretsmanager:ListSecrets action
+
+$ aws secretsmanager put-secret-value --secret-id taller/punto1/demo --secret-string "{}"
+
+aws: [ERROR]: An error occurred (AccessDeniedException) when calling the PutSecretValue operation: User: arn:aws:iam::807872461370:user/user_cli is not authorized to perform: secretsmanager:PutSecretValue on resource: taller/punto1/demo because no identity-based policy allows the secretsmanager:PutSecretValue action

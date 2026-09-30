@@ -1,0 +1,6 @@
+$ python punto1_secrets_manager/leer_secreto.py
+Identidad: arn:aws:iam::807872461370:user/user_cli
+Región:    us-east-2
+Secreto:   taller/punto1/demo
+No se pudo leer el secreto: InvalidRequestException
+You can't perform this operation on the secret because it was marked for deletion.

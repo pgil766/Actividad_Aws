@@ -26,8 +26,8 @@ Marca cada tarea cambiando `[ ]` por `[x]`. En GitHub también se pueden marcar 
 - [x] Crear el usuario IAM `user_cli` y configurar sus credenciales en el perfil `default` (verificado: `user/user_cli`, región us-east-2)
 
 ### Repositorio
-- [ ] Clonar o vincular https://github.com/pgil766/Actividad_Aws.git
-- [ ] Crear un `.gitignore` con: `*.tfstate*`, `.terraform/`, `*.pem`, `.env`, `.venv/`, `__pycache__/`
+- [x] Clonar o vincular https://github.com/pgil766/Actividad_Aws.git
+- [x] Crear un `.gitignore` con: `*.tfstate*`, `.terraform/`, `*.pem`, `.env`, `.venv/`, `__pycache__/`
 - [ ] Crear la estructura de carpetas:
   ```
   punto1_secrets_manager/
@@ -51,13 +51,13 @@ Marca cada tarea cambiando `[ ]` por `[x]`. En GitHub también se pueden marcar 
 - [ ] Diferencia entre **crear**, **recuperar desde una aplicación** y **rotar** un secreto
 
 ### Práctica
-- [ ] Crear un secreto de prueba (por ejemplo `taller/punto1/demo`) con `{"username": "...", "password": "..."}` ficticios
-- [ ] Crear una política IAM que permita `secretsmanager:GetSecretValue` **solo** sobre el ARN de ese secreto
-- [ ] Escribir `leer_secreto.py` con Boto3 para recuperarlo
-- [ ] Ejecutarlo y ver el valor v1
-- [ ] Cambiar el valor del secreto (consola o `put-secret-value`)
-- [ ] Ejecutar de nuevo, **sin tocar el código**, y ver el valor v2
-- [ ] Eliminar el secreto (`delete-secret`, con o sin ventana de recuperación)
+- [x] Crear un secreto de prueba (por ejemplo `taller/punto1/demo`) con `{"username": "...", "password": "..."}` ficticios
+- [x] Crear una política IAM que permita `secretsmanager:GetSecretValue` **solo** sobre el ARN de ese secreto
+- [x] Escribir `leer_secreto.py` con Boto3 para recuperarlo
+- [x] Ejecutarlo y ver el valor v1
+- [x] Cambiar el valor del secreto (consola o `put-secret-value`)
+- [x] Ejecutar de nuevo, **sin tocar el código**, y ver el valor v2
+- [x] Eliminar el secreto (`delete-secret`, con o sin ventana de recuperación)
 
 ### Preguntas de costos
 - [ ] ¿Cómo se cobran los secretos almacenados y las llamadas a la API?
@@ -65,12 +65,12 @@ Marca cada tarea cambiando `[ ]` por `[x]`. En GitHub también se pueden marcar 
 - [ ] ¿Cuándo conviene guardar el valor temporalmente en memoria (caché)?
 
 ### Evidencias a entregar
-- [ ] Código `leer_secreto.py`
-- [ ] JSON de la política de acceso
-- [ ] Captura o salida de la ejecución antes y después del cambio (valores ficticios; aun así puedes enmascararlos)
-- [ ] Explicación de por qué el programa obtiene la versión nueva (`AWSCURRENT`)
-- [ ] Estimación de costos
-- [ ] Captura de la eliminación del secreto
+- [x] Código `leer_secreto.py`
+- [x] JSON de la política de acceso
+- [x] Captura o salida de la ejecución antes y después del cambio (valores ficticios; aun así puedes enmascararlos)
+- [x] Explicación de por qué el programa obtiene la versión nueva (`AWSCURRENT`)
+- [x] Estimación de costos
+- [x] Captura de la eliminación del secreto
 
 ---
 

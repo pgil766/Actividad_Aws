@@ -1,0 +1,16 @@
+.env
+.vscode/
+__pycache__/
+*.py[cod]
+.venv/
+
+# Terraform: el estado puede contener datos sensibles
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+
+# Llaves y credenciales
+*.pem
+*accessKeys*.csv
+*credentials*.csv
