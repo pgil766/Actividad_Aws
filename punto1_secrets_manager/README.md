@@ -109,9 +109,9 @@ Detalle de tarifas y preguntas en [consulta.md](consulta.md#6-preguntas-de-costo
 | 02 | [02_permisos_user_cli.png](evidencias/02_permisos_user_cli.png) | `user_cli` con `Punto1LeerSecretoDemo` y sin `SecretsManagerReadWrite` |
 | 03 | [03_politica_json.png](evidencias/03_politica_json.png) | JSON de la política de acceso |
 | 04 | [04_acceso_denegado.txt](evidencias/04_acceso_denegado.txt) | Pruebas de mínimo privilegio (otro secreto, listar, modificar → denegado) |
-| 05 | [05_lectura_version1.png](evidencias/05_lectura_version1.png) · [.txt](evidencias/05_lectura_version1.txt) | Lectura de la versión 1 |
+| 05 | [05_lectura_version1.png](evidencias/05_lectura_version1.png) | Lectura de la versión 1 |
 | 06 | [06_versiones_antes_del_cambio.png](evidencias/06_versiones_antes_del_cambio.png) | Versiones antes de modificar el valor |
-| 07 | [07_lectura_version2.png](evidencias/07_lectura_version2.png) · [.txt](evidencias/07_lectura_version2.txt) | Misma ejecución, sin cambiar código, leyendo la versión 2 |
+| 07 | [07_lectura_version2.png](evidencias/07_lectura_version2.png) | Misma ejecución, sin cambiar código, leyendo la versión 2 |
 | 08 | [08_versiones_despues_del_cambio.png](evidencias/08_versiones_despues_del_cambio.png) | Nueva versión `AWSCURRENT` y anterior `AWSPREVIOUS` |
 | 09 | [09_lectura_tras_eliminacion.txt](evidencias/09_lectura_tras_eliminacion.txt) | El programa ya no puede leer el secreto eliminado |
 | 10 | [10_secretos_eliminados_ohio.png](evidencias/10_secretos_eliminados_ohio.png) | Secretos de us-east-2 con su fecha de eliminación |
