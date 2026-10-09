@@ -15,3 +15,6 @@ tfplan
 *.pem
 *accessKeys*.csv
 *credentials*.csv
+
+# Certificado de AWS (se descarga con tunel.sh)
+global-bundle.pem

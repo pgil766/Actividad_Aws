@@ -130,34 +130,34 @@ Marca cada tarea cambiando `[ ]` por `[x]`. En GitHub también se pueden marcar 
 - [ ] Comparar el precio de una instancia aprovisionada con Serverless (mínimo 0,5 DCU) y justificar la opción más barata
 
 ### Despliegue
-- [ ] Crear el clúster DocumentDB con la configuración más barata y la contraseña administrada en Secrets Manager
-- [ ] Crear una EC2 pequeña en la **misma VPC** (bastión) con su key pair
-- [ ] Configurar los Security Groups: tu IP → EC2:22 y SG de la EC2 → DocumentDB:27017
-- [ ] Descargar el certificado `global-bundle.pem` (TLS)
-- [ ] Abrir el túnel SSH: `ssh -i llave.pem -L 27017:<endpoint-docdb>:27017 ec2-user@<ip-ec2> -N`
-- [ ] Conectar con MongoDB Compass a través del túnel (TLS + CA + `tlsAllowInvalidHostnames`, `directConnection`)
-- [ ] Conectar desde Python (pymongo) leyendo la contraseña desde Secrets Manager
+- [x] Crear el clúster DocumentDB con la configuración más barata y la contraseña administrada en Secrets Manager
+- [x] Crear una EC2 pequeña en la **misma VPC** (bastión) con su key pair
+- [x] Configurar los Security Groups: tu IP → EC2:22 y SG de la EC2 → DocumentDB:27017
+- [x] Descargar el certificado `global-bundle.pem` (TLS)
+- [x] Abrir el túnel SSH: `ssh -i llave.pem -L 27017:<endpoint-docdb>:27017 ec2-user@<ip-ec2> -N`
+- [x] Conectar con MongoDB Compass a través del túnel (TLS + CA + `tlsAllowInvalidHostnames`, `directConnection`)
+- [x] Conectar desde Python (pymongo) leyendo la contraseña desde Secrets Manager
 
 ### Práctica con Python
-- [ ] Crear una base de datos y una colección
-- [ ] Insertar al menos **10 documentos**
-- [ ] Búsqueda con filtro
-- [ ] Ordenación
-- [ ] Agregación
+- [x] Crear una base de datos y una colección
+- [x] Insertar al menos **10 documentos**
+- [x] Búsqueda con filtro
+- [x] Ordenación
+- [x] Agregación
 
 ### Limpieza
-- [ ] Borrar el clúster (sin snapshot final), la EC2, la key pair y los SG + capturas
+- [x] Borrar el clúster (sin snapshot final), la EC2 y los SG (la key pair `pgm-mv` ya existía y se reutilizó, no se borra)
 
 ### Preguntas de costos
-- [ ] ¿Qué opción de DocumentDB cuesta menos para esta práctica?
-- [ ] ¿Cuánto agrega la EC2 del túnel?
+- [x] ¿Qué opción de DocumentDB cuesta menos para esta práctica?
+- [x] ¿Cuánto agrega la EC2 del túnel?
 
 ### Evidencias a entregar
-- [ ] Respuestas y cálculo de costos
-- [ ] **Diagrama de conexión** (PC → SSH → EC2 → DocumentDB, con puertos, SG y TLS)
-- [ ] Código Python y consultas
-- [ ] Resultados (salidas y captura de Compass conectado)
-- [ ] Capturas de la eliminación
+- [x] Respuestas y cálculo de costos
+- [x] **Diagrama de conexión** (PC → SSH → EC2 → DocumentDB, con puertos, SG y TLS)
+- [x] Código Python y consultas
+- [x] Resultados (salidas y captura de Compass conectado)
+- [x] Capturas de la eliminación
 
 ---
 

@@ -1,0 +1,47 @@
+$ python punto3_documentdb/docdb_operaciones.py
+Identidad AWS: arn:aws:iam::807872461370:user/user_cli
+Secreto:       arn:aws:secretsmanager:us-east-2:807872461370:secret:rds!cluster-8b9dcd0f-c88a-4e03-a3c9-d86bf689aee7-aRDN1R
+Usuario DB:    docdbadmin
+Conectado a DocumentDB (API MongoDB 5.0.0) en localhost:27017
+
+Base de datos 'actividad', colección 'customers': 10 documentos insertados (load_id=c8e3d555-3e39-4b5f-8959-a67198d3383c)
+
+== Filtro: clientes activos con más de 30 años
+{'name': 'Sofia Ramirez', 'city': 'Madrid', 'age': 42, 'amount': 210.25}
+{'name': 'Carlos Lopez', 'city': 'Valencia', 'age': 31, 'amount': 180.0}
+{'name': 'Diego Torres', 'city': 'Barcelona', 'age': 39, 'amount': 320.75}
+{'name': 'Pablo Moreno', 'city': 'Seville', 'age': 51, 'amount': 410.5}
+
+== Ordenación: top 5 por monto (descendente)
+{'name': 'Pablo Moreno', 'city': 'Seville', 'amount': 410.5}
+{'name': 'Diego Torres', 'city': 'Barcelona', 'amount': 320.75}
+{'name': 'Elena Ruiz', 'city': 'Valencia', 'amount': 275.0}
+{'name': 'Sofia Ramirez', 'city': 'Madrid', 'amount': 210.25}
+{'name': 'Carlos Lopez', 'city': 'Valencia', 'amount': 180.0}
+
+== Agregación: resumen por ciudad
+{'_id': 'Seville',
+ 'clientes': 2,
+ 'monto_total': 506.0,
+ 'monto_promedio': 253.0,
+ 'edad_promedio': 38.5}
+{'_id': 'Valencia',
+ 'clientes': 2,
+ 'monto_total': 455.0,
+ 'monto_promedio': 227.5,
+ 'edad_promedio': 30.0}
+{'_id': 'Barcelona',
+ 'clientes': 2,
+ 'monto_total': 395.75,
+ 'monto_promedio': 197.88,
+ 'edad_promedio': 37.0}
+{'_id': 'Madrid',
+ 'clientes': 3,
+ 'monto_total': 390.75,
+ 'monto_promedio': 130.25,
+ 'edad_promedio': 38.3}
+{'_id': 'Bilbao',
+ 'clientes': 1,
+ 'monto_total': 145.25,
+ 'monto_promedio': 145.25,
+ 'edad_promedio': 33.0}

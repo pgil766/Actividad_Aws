@@ -1,0 +1,23 @@
+Identidad: arn:aws:iam::807872461370:user/user_cli
+DocumentDB: eliminando instancia p3-docdb...
+EC2: terminando bastión i-08c21f2390147b83a...
+DocumentDB: instancia p3-docdb eliminada
+DocumentDB: eliminando clúster p3-docdb...
+DocumentDB: clúster eliminado
+EC2: bastión terminado
+Security group p3-docdb-sg eliminado
+Security group p3-bastion-sg eliminado
+
+######## Verificación
+== Clúster DocumentDB
+aws: [ERROR]: An error occurred (DBClusterNotFoundFault) when calling the DescribeDBClusters operation: DBCluster p3-docdb not found.
+== Instancia p3-docdb
+aws: [ERROR]: An error occurred (DBInstanceNotFound) when calling the DescribeDBInstances operation: DBInstance p3-docdb not found.
+== Bastión
+i-08c21f2390147b83a	terminated
+== Security groups p3-*
+0
+== Secreto arn:aws:secretsmanager:us-east-2:807872461370:secret:rds!cluster-8b9dcd0f-c88a-4e03-a3c9-d86bf689aee7-aRDN1R
+aws: [ERROR]: An error occurred (ResourceNotFoundException) when calling the DescribeSecret operation: Secrets Manager can't find the specified secret.
+== Snapshots manuales del clúster
+0

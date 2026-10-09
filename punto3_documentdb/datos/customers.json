@@ -1,0 +1,82 @@
+[
+  {
+    "name": "Ana Garcia",
+    "email": "ana.garcia@example.com",
+    "city": "Madrid",
+    "age": 28,
+    "status": "active",
+    "amount": 120.5
+  },
+  {
+    "name": "Luis Martinez",
+    "email": "luis.martinez@example.com",
+    "city": "Barcelona",
+    "age": 35,
+    "status": "inactive",
+    "amount": 75.0
+  },
+  {
+    "name": "Sofia Ramirez",
+    "email": "sofia.ramirez@example.com",
+    "city": "Madrid",
+    "age": 42,
+    "status": "active",
+    "amount": 210.25
+  },
+  {
+    "name": "Carlos Lopez",
+    "email": "carlos.lopez@example.com",
+    "city": "Valencia",
+    "age": 31,
+    "status": "active",
+    "amount": 180.0
+  },
+  {
+    "name": "Marta Sanchez",
+    "email": "marta.sanchez@example.com",
+    "city": "Seville",
+    "age": 26,
+    "status": "pending",
+    "amount": 95.5
+  },
+  {
+    "name": "Diego Torres",
+    "email": "diego.torres@example.com",
+    "city": "Barcelona",
+    "age": 39,
+    "status": "active",
+    "amount": 320.75
+  },
+  {
+    "name": "Laura Fernandez",
+    "email": "laura.fernandez@example.com",
+    "city": "Madrid",
+    "age": 45,
+    "status": "inactive",
+    "amount": 60.0
+  },
+  {
+    "name": "Jorge Navarro",
+    "email": "jorge.navarro@example.com",
+    "city": "Bilbao",
+    "age": 33,
+    "status": "pending",
+    "amount": 145.25
+  },
+  {
+    "name": "Elena Ruiz",
+    "email": "elena.ruiz@example.com",
+    "city": "Valencia",
+    "age": 29,
+    "status": "active",
+    "amount": 275.0
+  },
+  {
+    "name": "Pablo Moreno",
+    "email": "pablo.moreno@example.com",
+    "city": "Seville",
+    "age": 51,
+    "status": "active",
+    "amount": 410.5
+  }
+]

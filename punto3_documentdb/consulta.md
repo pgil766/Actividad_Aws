@@ -46,7 +46,9 @@ La carga del taller es mínima (10 documentos y unas pocas consultas) durante un
 
 En ambos casos se usa **1 sola instancia** (sin réplicas) y almacenamiento estándar, no I/O-Optimized.
 
-## 4. Arquitectura de conexión (para el diagrama)
+## 4. Arquitectura de conexión
+
+El diagrama completo y los parámetros de conexión usados en la práctica están en [diagrama_conexion.md](diagrama_conexion.md).
 
 ```
 [Tu PC] --SSH:22--> [EC2 bastión (subred pública, IP pública)] --TCP:27017 + TLS--> [DocumentDB (subredes privadas)]
@@ -77,6 +79,27 @@ Con una EC2 `t3.micro` (o `t4g.micro`) de 8 GB:
 | **Total EC2 del túnel** | **≈ USD 0.016/h** |
 
 Para 4 horas de práctica son **≈ USD 0.07**. En serverless, la EC2 sumaría cerca de un **40 %** al costo de la base de datos. Si la cuenta tiene capa gratuita o créditos de EC2, puede quedar en USD 0.
+
+### Costo real de la práctica
+Configuración desplegada: DocumentDB **1 instancia `db.t3.medium` con la prueba gratuita de 30 días** (motor 5.0.0, almacenamiento estándar, 1 día de backups) más el bastión `t3.micro` con IPv4 pública. Todo estuvo activo unas **2 horas**, desde la creación hasta la eliminación.
+
+Como la cuenta tenía disponible la prueba gratuita, se eligió `db.t3.medium` aprovisionada: es la única clase incluida en la prueba y su costo fue **USD 0**. Por eso resultó más barata que Serverless, que no entra en la prueba. El costo real es la columna **"Con prueba gratuita"**; la otra columna se deja como referencia.
+
+| Concepto | Cálculo | Sin prueba gratuita | Con prueba gratuita |
+|---|---|---|---|
+| DocumentDB `db.t3.medium` | 2 h × USD 0.078 | USD 0.16 | USD 0 (750 h gratis) |
+| Almacenamiento y E/S | 10 documentos, unos miles de E/S | < USD 0.01 | USD 0 |
+| Secreto `rds!cluster-…` | ~2 h de USD 0.40/mes | < USD 0.01 | < USD 0.01 |
+| EC2 bastión + IPv4 + EBS | 2 h × USD 0.016 | USD 0.03 | USD 0.03 |
+| **Total** | | **≈ USD 0.20** | **≈ USD 0.03** |
+
+Con Serverless (0,5 DCU) el clúster habría costado ≈ 2 h × USD 0.041 = USD 0.08 en lugar de USD 0.16. Para 2 horas, la diferencia es de 8 centavos.
+
+**Qué se elimina al terminar y por qué:**
+- La instancia y el clúster, **sin snapshot final**: un snapshot seguiría cobrando almacenamiento.
+- El bastión, que cobra cómputo, EBS e IPv4.
+- Los dos security groups.
+- El secreto de DocumentDB no se borra a mano: lo elimina automáticamente DocumentDB junto con el clúster.
 
 ## Fuentes
 - [Amazon DocumentDB Pricing](https://aws.amazon.com/documentdb/pricing/)
