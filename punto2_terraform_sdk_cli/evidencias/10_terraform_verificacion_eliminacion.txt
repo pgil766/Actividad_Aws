@@ -1,0 +1,9 @@
+== terraform state list (vacío = nada administrado)
+== Comprobación con AWS CLI
+aws: [ERROR]: An error occurred (DBInstanceNotFound) when calling the DescribeDBInstances operation: DBInstance p2-terraform-db not found.
+i-0e3642b626b7ff173	terminated
+aws: [ERROR]: An error occurred (404) when calling the HeadBucket operation: Not Found
+0
+== Secreto de RDS
+
+aws: [ERROR]: An error occurred (ResourceNotFoundException) when calling the DescribeSecret operation: Secrets Manager can't find the specified secret.

@@ -1,0 +1,341 @@
+Initializing the backend...
+
+Initializing provider plugins...
+- Finding hashicorp/aws versions matching "~> 6.0"...
+- Installing hashicorp/aws v6.68.0...
+- Installed hashicorp/aws v6.68.0 (signed by HashiCorp)
+
+Terraform has created a lock file .terraform.lock.hcl to record the provider
+selections it made above. Include this file in your version control repository
+so that Terraform can guarantee to make the same selections by default when
+you run "terraform init" in the future.
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+Success! The configuration is valid.
+
+data.aws_vpc.default: Reading...
+data.aws_ami.amazon_linux: Reading...
+data.aws_caller_identity.actual: Reading...
+data.aws_caller_identity.actual: Read complete after 0s [id=807872461370]
+data.aws_ami.amazon_linux: Read complete after 1s [id=ami-070db52ff58e36a5a]
+data.aws_vpc.default: Read complete after 2s [id=vpc-09458b3b191689ee9]
+data.aws_subnets.default: Reading...
+data.aws_subnets.default: Read complete after 0s [id=us-east-2]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_db_instance.postgres will be created
+  + resource "aws_db_instance" "postgres" {
+      + address                               = (known after apply)
+      + allocated_storage                     = 20
+      + apply_immediately                     = true
+      + arn                                   = (known after apply)
+      + auto_minor_version_upgrade            = true
+      + availability_zone                     = (known after apply)
+      + backup_retention_period               = 0
+      + backup_target                         = (known after apply)
+      + backup_window                         = (known after apply)
+      + ca_cert_identifier                    = (known after apply)
+      + character_set_name                    = (known after apply)
+      + copy_tags_to_snapshot                 = false
+      + database_insights_mode                = (known after apply)
+      + db_name                               = "actividad"
+      + db_subnet_group_name                  = "p2-terraform-db-subnets"
+      + dedicated_log_volume                  = false
+      + delete_automated_backups              = true
+      + deletion_protection                   = false
+      + domain_fqdn                           = (known after apply)
+      + endpoint                              = (known after apply)
+      + engine                                = "postgres"
+      + engine_lifecycle_support              = (known after apply)
+      + engine_version                        = (known after apply)
+      + engine_version_actual                 = (known after apply)
+      + hosted_zone_id                        = (known after apply)
+      + id                                    = (known after apply)
+      + identifier                            = "p2-terraform-db"
+      + identifier_prefix                     = (known after apply)
+      + instance_class                        = "db.t4g.micro"
+      + iops                                  = (known after apply)
+      + kms_key_id                            = (known after apply)
+      + latest_restorable_time                = (known after apply)
+      + license_model                         = (known after apply)
+      + listener_endpoint                     = (known after apply)
+      + maintenance_window                    = (known after apply)
+      + manage_master_user_password           = true
+      + master_user_secret                    = (known after apply)
+      + master_user_secret_kms_key_id         = (known after apply)
+      + monitoring_interval                   = 0
+      + monitoring_role_arn                   = (known after apply)
+      + multi_az                              = false
+      + nchar_character_set_name              = (known after apply)
+      + network_type                          = (known after apply)
+      + option_group_name                     = (known after apply)
+      + parameter_group_name                  = (known after apply)
+      + password_wo                           = (write-only attribute)
+      + performance_insights_enabled          = false
+      + performance_insights_kms_key_id       = (known after apply)
+      + performance_insights_retention_period = (known after apply)
+      + port                                  = (known after apply)
+      + publicly_accessible                   = false
+      + region                                = "us-east-2"
+      + replica_mode                          = (known after apply)
+      + replicas                              = (known after apply)
+      + resource_id                           = (known after apply)
+      + skip_final_snapshot                   = true
+      + snapshot_identifier                   = (known after apply)
+      + status                                = (known after apply)
+      + storage_encrypted                     = true
+      + storage_throughput                    = (known after apply)
+      + storage_type                          = "gp3"
+      + tags_all                              = {
+          + "Metodo"   = "terraform"
+          + "Proyecto" = "actividad-aws"
+          + "Punto"    = "2"
+        }
+      + timezone                              = (known after apply)
+      + upgrade_rollout_order                 = (known after apply)
+      + username                              = "dbadmin"
+      + vpc_security_group_ids                = (known after apply)
+    }
+
+  # aws_db_subnet_group.rds will be created
+  + resource "aws_db_subnet_group" "rds" {
+      + arn                     = (known after apply)
+      + description             = "Managed by Terraform"
+      + id                      = (known after apply)
+      + name                    = "p2-terraform-db-subnets"
+      + name_prefix             = (known after apply)
+      + region                  = "us-east-2"
+      + subnet_ids              = [
+          + "subnet-03034a34079cd1217",
+          + "subnet-037a809b53ab784bf",
+          + "subnet-07aa0649249241718",
+        ]
+      + supported_network_types = (known after apply)
+      + tags_all                = {
+          + "Metodo"   = "terraform"
+          + "Proyecto" = "actividad-aws"
+          + "Punto"    = "2"
+        }
+      + vpc_id                  = (known after apply)
+    }
+
+  # aws_instance.app will be created
+  + resource "aws_instance" "app" {
+      + ami                                  = "ami-070db52ff58e36a5a"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = false
+      + availability_zone                    = (known after apply)
+      + disable_api_stop                     = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + enable_primary_ipv6                  = (known after apply)
+      + force_destroy                        = false
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + host_resource_group_arn              = (known after apply)
+      + iam_instance_profile                 = (known after apply)
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_lifecycle                   = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t3.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = (known after apply)
+      + monitoring                           = (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_group_id                   = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + region                               = "us-east-2"
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + spot_instance_request_id             = (known after apply)
+      + subnet_id                            = "subnet-07aa0649249241718"
+      + tags                                 = {
+          + "Name" = "p2-terraform-ec2"
+        }
+      + tags_all                             = {
+          + "Metodo"   = "terraform"
+          + "Name"     = "p2-terraform-ec2"
+          + "Proyecto" = "actividad-aws"
+          + "Punto"    = "2"
+        }
+      + tenancy                              = (known after apply)
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = false
+      + vpc_security_group_ids               = (known after apply)
+
+      + capacity_reservation_specification (known after apply)
+
+      + cpu_options (known after apply)
+
+      + ebs_block_device (known after apply)
+
+      + enclave_options (known after apply)
+
+      + ephemeral_block_device (known after apply)
+
+      + instance_market_options (known after apply)
+
+      + maintenance_options (known after apply)
+
+      + metadata_options (known after apply)
+
+      + network_interface (known after apply)
+
+      + primary_network_interface (known after apply)
+
+      + private_dns_name_options (known after apply)
+
+      + root_block_device (known after apply)
+
+      + secondary_network_interface (known after apply)
+    }
+
+  # aws_s3_bucket.datos will be created
+  + resource "aws_s3_bucket" "datos" {
+      + acceleration_status         = (known after apply)
+      + acl                         = (known after apply)
+      + arn                         = (known after apply)
+      + bucket                      = "actividad-aws-p2-807872461370-terraform"
+      + bucket_domain_name          = (known after apply)
+      + bucket_namespace            = (known after apply)
+      + bucket_prefix               = (known after apply)
+      + bucket_region               = (known after apply)
+      + bucket_regional_domain_name = (known after apply)
+      + force_destroy               = true
+      + hosted_zone_id              = (known after apply)
+      + id                          = (known after apply)
+      + object_lock_enabled         = (known after apply)
+      + policy                      = (known after apply)
+      + region                      = "us-east-2"
+      + request_payer               = (known after apply)
+      + tags_all                    = {
+          + "Metodo"   = "terraform"
+          + "Proyecto" = "actividad-aws"
+          + "Punto"    = "2"
+        }
+      + website_domain              = (known after apply)
+      + website_endpoint            = (known after apply)
+
+      + cors_rule (known after apply)
+
+      + grant (known after apply)
+
+      + lifecycle_rule (known after apply)
+
+      + logging (known after apply)
+
+      + object_lock_configuration (known after apply)
+
+      + replication_configuration (known after apply)
+
+      + server_side_encryption_configuration (known after apply)
+
+      + versioning (known after apply)
+
+      + website (known after apply)
+    }
+
+  # aws_security_group.ec2 will be created
+  + resource "aws_security_group" "ec2" {
+      + arn                    = (known after apply)
+      + description            = "EC2 del punto 2: sin entradas, solo salida"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + from_port        = 0
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+                # (1 unchanged attribute hidden)
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = (known after apply)
+      + name                   = "p2-terraform-ec2-sg"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + region                 = "us-east-2"
+      + revoke_rules_on_delete = false
+      + tags_all               = {
+          + "Metodo"   = "terraform"
+          + "Proyecto" = "actividad-aws"
+          + "Punto"    = "2"
+        }
+      + vpc_id                 = "vpc-09458b3b191689ee9"
+    }
+
+  # aws_security_group.rds will be created
+  + resource "aws_security_group" "rds" {
+      + arn                    = (known after apply)
+      + description            = "RDS del punto 2: PostgreSQL solo desde la EC2"
+      + egress                 = (known after apply)
+      + id                     = (known after apply)
+      + ingress                = [
+          + {
+              + cidr_blocks      = []
+              + description      = "PostgreSQL desde el SG de la EC2"
+              + from_port        = 5432
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = (known after apply)
+              + self             = false
+              + to_port          = 5432
+            },
+        ]
+      + name                   = "p2-terraform-rds-sg"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + region                 = "us-east-2"
+      + revoke_rules_on_delete = false
+      + tags_all               = {
+          + "Metodo"   = "terraform"
+          + "Proyecto" = "actividad-aws"
+          + "Punto"    = "2"
+        }
+      + vpc_id                 = "vpc-09458b3b191689ee9"
+    }
+
+Plan: 6 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + ec2_instance_id = (known after apply)
+  + identidad       = "arn:aws:iam::807872461370:user/user_cli"
+  + rds_endpoint    = (known after apply)
+  + rds_secret_arn  = (known after apply)
+  + s3_bucket       = "actividad-aws-p2-807872461370-terraform"
+
+─────────────────────────────────────────────────────────────────────────────
+
+Saved the plan to: tfplan
+
+To perform exactly these actions, run the following command to apply:
+    terraform apply "tfplan"

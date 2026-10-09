@@ -1,0 +1,32 @@
+Identidad: arn:aws:iam::807872461370:user/user_cli
+RDS: eliminando p2-cli-db...
+EC2: terminando i-0f96531edb627a67e...
+EC2: terminated
+RDS: eliminada
+RDS: subnet group eliminado
+{
+    "Return": true,
+    "GroupId": "sg-0d7b148e930e85d54"
+}
+Security group p2-cli-rds-sg eliminado
+{
+    "Return": true,
+    "GroupId": "sg-07c6aca396006626a"
+}
+Security group p2-cli-ec2-sg eliminado
+S3: bucket actividad-aws-p2-807872461370-cli eliminado
+
+######## Verificación
+== Identidad: arn:aws:iam::807872461370:user/user_cli
+== RDS p2-cli-db
+aws: [ERROR]: An error occurred (DBInstanceNotFound) when calling the DescribeDBInstances operation: DBInstance p2-cli-db not found.
+== RDS subnet group p2-cli-db-subnets
+aws: [ERROR]: An error occurred (DBSubnetGroupNotFoundFault) when calling the DescribeDBSubnetGroups operation: DB Subnet group 'p2-cli-db-subnets' not found.
+== EC2 p2-cli-ec2 (debe estar terminated o no aparecer)
+i-0f96531edb627a67e	terminated
+== Security groups p2-cli-*
+0
+== S3 actividad-aws-p2-807872461370-cli
+aws: [ERROR]: An error occurred (404) when calling the HeadBucket operation: Not Found
+== Secreto de RDS arn:aws:secretsmanager:us-east-2:807872461370:secret:rds!db-07f51ebd-5f7b-445c-881d-58271f9bdd83-vG2JxP
+aws: [ERROR]: An error occurred (ResourceNotFoundException) when calling the DescribeSecret operation: Secrets Manager can't find the specified secret.

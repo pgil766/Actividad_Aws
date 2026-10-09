@@ -1,0 +1,13 @@
+== Identidad: arn:aws:iam::807872461370:user/user_cli
+== RDS p2-boto3-db
+aws: [ERROR]: An error occurred (DBInstanceNotFound) when calling the DescribeDBInstances operation: DBInstance p2-boto3-db not found.
+== RDS subnet group p2-boto3-db-subnets
+aws: [ERROR]: An error occurred (DBSubnetGroupNotFoundFault) when calling the DescribeDBSubnetGroups operation: DB Subnet group 'p2-boto3-db-subnets' not found.
+== EC2 p2-boto3-ec2 (debe estar terminated o no aparecer)
+i-0d761e09cc06abb44	terminated
+== Security groups p2-boto3-*
+0
+== S3 actividad-aws-p2-807872461370-boto3
+aws: [ERROR]: An error occurred (404) when calling the HeadBucket operation: Not Found
+== Secreto de RDS arn:aws:secretsmanager:us-east-2:807872461370:secret:rds!db-1135bf21-63cc-4617-8b6d-f62b963ca5e7-gIw7N5
+aws: [ERROR]: An error occurred (ResourceNotFoundException) when calling the DescribeSecret operation: Secrets Manager can't find the specified secret.

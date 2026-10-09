@@ -1,0 +1,398 @@
+data.aws_ami.amazon_linux: Reading...
+data.aws_vpc.default: Reading...
+data.aws_caller_identity.actual: Reading...
+data.aws_caller_identity.actual: Read complete after 0s [id=807872461370]
+aws_s3_bucket.datos: Refreshing state... [id=actividad-aws-p2-807872461370-terraform]
+data.aws_ami.amazon_linux: Read complete after 1s [id=ami-070db52ff58e36a5a]
+data.aws_vpc.default: Read complete after 1s [id=vpc-09458b3b191689ee9]
+data.aws_subnets.default: Reading...
+aws_security_group.ec2: Refreshing state... [id=sg-0ede489afb2fba846]
+aws_security_group.rds: Refreshing state... [id=sg-09ded738ed600f1c6]
+data.aws_subnets.default: Read complete after 1s [id=us-east-2]
+aws_db_subnet_group.rds: Refreshing state... [id=p2-terraform-db-subnets]
+aws_instance.app: Refreshing state... [id=i-0e3642b626b7ff173]
+aws_db_instance.postgres: Refreshing state... [id=db-KACTTSOUJZXSPC6GS2M36DDGXM]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # aws_db_instance.postgres will be destroyed
+  - resource "aws_db_instance" "postgres" {
+      - address                               = "p2-terraform-db.czaoq262qew7.us-east-2.rds.amazonaws.com" -> null
+      - allocated_storage                     = 20 -> null
+      - apply_immediately                     = true -> null
+      - arn                                   = "arn:aws:rds:us-east-2:807872461370:db:p2-terraform-db" -> null
+      - auto_minor_version_upgrade            = true -> null
+      - availability_zone                     = "us-east-2b" -> null
+      - backup_retention_period               = 0 -> null
+      - backup_target                         = "region" -> null
+      - backup_window                         = "07:29-07:59" -> null
+      - ca_cert_identifier                    = "rds-ca-rsa2048-g1" -> null
+      - copy_tags_to_snapshot                 = false -> null
+      - customer_owned_ip_enabled             = false -> null
+      - database_insights_mode                = "standard" -> null
+      - db_name                               = "actividad" -> null
+      - db_subnet_group_name                  = "p2-terraform-db-subnets" -> null
+      - dedicated_log_volume                  = false -> null
+      - delete_automated_backups              = true -> null
+      - deletion_protection                   = false -> null
+      - domain_dns_ips                        = [] -> null
+      - enabled_cloudwatch_logs_exports       = [] -> null
+      - endpoint                              = "p2-terraform-db.czaoq262qew7.us-east-2.rds.amazonaws.com:5432" -> null
+      - engine                                = "postgres" -> null
+      - engine_lifecycle_support              = "open-source-rds-extended-support" -> null
+      - engine_version                        = "18.3" -> null
+      - engine_version_actual                 = "18.3" -> null
+      - hosted_zone_id                        = "Z2XHWR1WZ565X2" -> null
+      - iam_database_authentication_enabled   = false -> null
+      - id                                    = "db-KACTTSOUJZXSPC6GS2M36DDGXM" -> null
+      - identifier                            = "p2-terraform-db" -> null
+      - instance_class                        = "db.t4g.micro" -> null
+      - iops                                  = 3000 -> null
+      - kms_key_id                            = "arn:aws:kms:us-east-2:807872461370:key/71b0a4b7-e408-4e8c-8fb2-9935f0be0481" -> null
+      - license_model                         = "postgresql-license" -> null
+      - listener_endpoint                     = [] -> null
+      - maintenance_window                    = "fri:08:30-fri:09:00" -> null
+      - manage_master_user_password           = true -> null
+      - master_user_secret                    = [
+          - {
+              - kms_key_id    = "arn:aws:kms:us-east-2:807872461370:key/3c565dfa-7d65-4d30-9f24-a52d6dcc8e9a"
+              - secret_arn    = "arn:aws:secretsmanager:us-east-2:807872461370:secret:rds!db-ed53cb24-bae1-4e36-a0b5-7c2602fa7602-2aJm6g"
+              - secret_status = "active"
+            },
+        ] -> null
+      - max_allocated_storage                 = 0 -> null
+      - monitoring_interval                   = 0 -> null
+      - multi_az                              = false -> null
+      - network_type                          = "IPV4" -> null
+      - option_group_name                     = "default:postgres-18" -> null
+      - parameter_group_name                  = "default.postgres18" -> null
+      - password_wo                           = (write-only attribute) -> null
+      - performance_insights_enabled          = false -> null
+      - performance_insights_retention_period = 0 -> null
+      - port                                  = 5432 -> null
+      - publicly_accessible                   = false -> null
+      - region                                = "us-east-2" -> null
+      - replicas                              = [] -> null
+      - resource_id                           = "db-KACTTSOUJZXSPC6GS2M36DDGXM" -> null
+      - skip_final_snapshot                   = true -> null
+      - status                                = "available" -> null
+      - storage_encrypted                     = true -> null
+      - storage_throughput                    = 125 -> null
+      - storage_type                          = "gp3" -> null
+      - tags                                  = {} -> null
+      - tags_all                              = {
+          - "Metodo"   = "terraform"
+          - "Proyecto" = "actividad-aws"
+          - "Punto"    = "2"
+        } -> null
+      - upgrade_rollout_order                 = "second" -> null
+      - username                              = "dbadmin" -> null
+      - vpc_security_group_ids                = [
+          - "sg-09ded738ed600f1c6",
+        ] -> null
+        # (15 unchanged attributes hidden)
+    }
+
+  # aws_db_subnet_group.rds will be destroyed
+  - resource "aws_db_subnet_group" "rds" {
+      - arn                     = "arn:aws:rds:us-east-2:807872461370:subgrp:p2-terraform-db-subnets" -> null
+      - description             = "Managed by Terraform" -> null
+      - id                      = "p2-terraform-db-subnets" -> null
+      - name                    = "p2-terraform-db-subnets" -> null
+      - region                  = "us-east-2" -> null
+      - subnet_ids              = [
+          - "subnet-03034a34079cd1217",
+          - "subnet-037a809b53ab784bf",
+          - "subnet-07aa0649249241718",
+        ] -> null
+      - supported_network_types = [
+          - "IPV4",
+        ] -> null
+      - tags                    = {} -> null
+      - tags_all                = {
+          - "Metodo"   = "terraform"
+          - "Proyecto" = "actividad-aws"
+          - "Punto"    = "2"
+        } -> null
+      - vpc_id                  = "vpc-09458b3b191689ee9" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # aws_instance.app will be destroyed
+  - resource "aws_instance" "app" {
+      - ami                                  = "ami-070db52ff58e36a5a" -> null
+      - arn                                  = "arn:aws:ec2:us-east-2:807872461370:instance/i-0e3642b626b7ff173" -> null
+      - associate_public_ip_address          = false -> null
+      - availability_zone                    = "us-east-2b" -> null
+      - disable_api_stop                     = false -> null
+      - disable_api_termination              = false -> null
+      - ebs_optimized                        = false -> null
+      - force_destroy                        = false -> null
+      - get_password_data                    = false -> null
+      - hibernation                          = false -> null
+      - id                                   = "i-0e3642b626b7ff173" -> null
+      - instance_initiated_shutdown_behavior = "stop" -> null
+      - instance_state                       = "running" -> null
+      - instance_type                        = "t3.micro" -> null
+      - ipv6_address_count                   = 0 -> null
+      - ipv6_addresses                       = [] -> null
+      - monitoring                           = false -> null
+      - placement_partition_number           = 0 -> null
+      - primary_network_interface_id         = "eni-06c3186ede1bb382a" -> null
+      - private_dns                          = "ip-172-31-18-161.us-east-2.compute.internal" -> null
+      - private_ip                           = "172.31.18.161" -> null
+      - region                               = "us-east-2" -> null
+      - secondary_private_ips                = [] -> null
+      - security_groups                      = [
+          - "p2-terraform-ec2-sg",
+        ] -> null
+      - source_dest_check                    = true -> null
+      - subnet_id                            = "subnet-07aa0649249241718" -> null
+      - tags                                 = {
+          - "Name" = "p2-terraform-ec2"
+        } -> null
+      - tags_all                             = {
+          - "Metodo"   = "terraform"
+          - "Name"     = "p2-terraform-ec2"
+          - "Proyecto" = "actividad-aws"
+          - "Punto"    = "2"
+        } -> null
+      - tenancy                              = "default" -> null
+      - user_data_replace_on_change          = false -> null
+      - vpc_security_group_ids               = [
+          - "sg-0ede489afb2fba846",
+        ] -> null
+        # (11 unchanged attributes hidden)
+
+      - capacity_reservation_specification {
+          - capacity_reservation_preference = "open" -> null
+        }
+
+      - cpu_options {
+          - core_count            = 1 -> null
+          - threads_per_core      = 2 -> null
+            # (2 unchanged attributes hidden)
+        }
+
+      - credit_specification {
+          - cpu_credits = "unlimited" -> null
+        }
+
+      - enclave_options {
+          - enabled = false -> null
+        }
+
+      - maintenance_options {
+          - auto_recovery = "default" -> null
+        }
+
+      - metadata_options {
+          - http_endpoint               = "enabled" -> null
+          - http_protocol_ipv6          = "disabled" -> null
+          - http_put_response_hop_limit = 2 -> null
+          - http_tokens                 = "required" -> null
+          - instance_metadata_tags      = "disabled" -> null
+        }
+
+      - primary_network_interface {
+          - delete_on_termination = true -> null
+          - network_interface_id  = "eni-06c3186ede1bb382a" -> null
+        }
+
+      - private_dns_name_options {
+          - enable_resource_name_dns_a_record    = false -> null
+          - enable_resource_name_dns_aaaa_record = false -> null
+          - hostname_type                        = "ip-name" -> null
+        }
+
+      - root_block_device {
+          - delete_on_termination = true -> null
+          - device_name           = "/dev/xvda" -> null
+          - encrypted             = false -> null
+          - iops                  = 3000 -> null
+          - tags                  = {
+              - "Metodo"   = "terraform"
+              - "Proyecto" = "actividad-aws"
+              - "Punto"    = "2"
+            } -> null
+          - tags_all              = {
+              - "Metodo"   = "terraform"
+              - "Proyecto" = "actividad-aws"
+              - "Punto"    = "2"
+            } -> null
+          - throughput            = 125 -> null
+          - volume_id             = "vol-0b09a665f99aa5d97" -> null
+          - volume_size           = 8 -> null
+          - volume_type           = "gp3" -> null
+            # (1 unchanged attribute hidden)
+        }
+    }
+
+  # aws_s3_bucket.datos will be destroyed
+  - resource "aws_s3_bucket" "datos" {
+      - arn                         = "arn:aws:s3:::actividad-aws-p2-807872461370-terraform" -> null
+      - bucket                      = "actividad-aws-p2-807872461370-terraform" -> null
+      - bucket_domain_name          = "actividad-aws-p2-807872461370-terraform.s3.amazonaws.com" -> null
+      - bucket_namespace            = "global" -> null
+      - bucket_region               = "us-east-2" -> null
+      - bucket_regional_domain_name = "actividad-aws-p2-807872461370-terraform.s3.us-east-2.amazonaws.com" -> null
+      - force_destroy               = true -> null
+      - hosted_zone_id              = "Z2O1EMRO9K5GLX" -> null
+      - id                          = "actividad-aws-p2-807872461370-terraform" -> null
+      - object_lock_enabled         = false -> null
+      - region                      = "us-east-2" -> null
+      - request_payer               = "BucketOwner" -> null
+      - tags                        = {} -> null
+      - tags_all                    = {
+          - "Metodo"   = "terraform"
+          - "Proyecto" = "actividad-aws"
+          - "Punto"    = "2"
+        } -> null
+        # (3 unchanged attributes hidden)
+
+      - grant {
+          - id          = "77288c19bf89634a6acd4e2252adc0af1929cb2fe4304cea4e957aded2ce3b27" -> null
+          - permissions = [
+              - "FULL_CONTROL",
+            ] -> null
+          - type        = "CanonicalUser" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - server_side_encryption_configuration {
+          - rule {
+              - bucket_key_enabled = false -> null
+
+              - apply_server_side_encryption_by_default {
+                  - sse_algorithm     = "AES256" -> null
+                    # (1 unchanged attribute hidden)
+                }
+            }
+        }
+
+      - versioning {
+          - enabled    = false -> null
+          - mfa_delete = false -> null
+        }
+    }
+
+  # aws_security_group.ec2 will be destroyed
+  - resource "aws_security_group" "ec2" {
+      - arn                    = "arn:aws:ec2:us-east-2:807872461370:security-group/sg-0ede489afb2fba846" -> null
+      - description            = "EC2 del punto 2: sin entradas, solo salida" -> null
+      - egress                 = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - from_port        = 0
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "-1"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 0
+                # (1 unchanged attribute hidden)
+            },
+        ] -> null
+      - id                     = "sg-0ede489afb2fba846" -> null
+      - ingress                = [] -> null
+      - name                   = "p2-terraform-ec2-sg" -> null
+      - owner_id               = "807872461370" -> null
+      - region                 = "us-east-2" -> null
+      - revoke_rules_on_delete = false -> null
+      - tags                   = {} -> null
+      - tags_all               = {
+          - "Metodo"   = "terraform"
+          - "Proyecto" = "actividad-aws"
+          - "Punto"    = "2"
+        } -> null
+      - vpc_id                 = "vpc-09458b3b191689ee9" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # aws_security_group.rds will be destroyed
+  - resource "aws_security_group" "rds" {
+      - arn                    = "arn:aws:ec2:us-east-2:807872461370:security-group/sg-09ded738ed600f1c6" -> null
+      - description            = "RDS del punto 2: PostgreSQL solo desde la EC2" -> null
+      - egress                 = [] -> null
+      - id                     = "sg-09ded738ed600f1c6" -> null
+      - ingress                = [
+          - {
+              - cidr_blocks      = []
+              - description      = "PostgreSQL desde el SG de la EC2"
+              - from_port        = 5432
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = [
+                  - "sg-0ede489afb2fba846",
+                ]
+              - self             = false
+              - to_port          = 5432
+            },
+        ] -> null
+      - name                   = "p2-terraform-rds-sg" -> null
+      - owner_id               = "807872461370" -> null
+      - region                 = "us-east-2" -> null
+      - revoke_rules_on_delete = false -> null
+      - tags                   = {} -> null
+      - tags_all               = {
+          - "Metodo"   = "terraform"
+          - "Proyecto" = "actividad-aws"
+          - "Punto"    = "2"
+        } -> null
+      - vpc_id                 = "vpc-09458b3b191689ee9" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+Plan: 0 to add, 0 to change, 6 to destroy.
+
+Changes to Outputs:
+  - ec2_instance_id = "i-0e3642b626b7ff173" -> null
+  - identidad       = "arn:aws:iam::807872461370:user/user_cli" -> null
+  - rds_endpoint    = "p2-terraform-db.czaoq262qew7.us-east-2.rds.amazonaws.com" -> null
+  - rds_secret_arn  = "arn:aws:secretsmanager:us-east-2:807872461370:secret:rds!db-ed53cb24-bae1-4e36-a0b5-7c2602fa7602-2aJm6g" -> null
+  - s3_bucket       = "actividad-aws-p2-807872461370-terraform" -> null
+aws_s3_bucket.datos: Destroying... [id=actividad-aws-p2-807872461370-terraform]
+aws_db_instance.postgres: Destroying... [id=db-KACTTSOUJZXSPC6GS2M36DDGXM]
+aws_instance.app: Destroying... [id=i-0e3642b626b7ff173]
+aws_s3_bucket.datos: Destruction complete after 1s
+aws_db_instance.postgres: Still destroying... [id=db-KACTTSOUJZXSPC6GS2M36DDGXM, 00m10s elapsed]
+aws_instance.app: Still destroying... [id=i-0e3642b626b7ff173, 00m10s elapsed]
+aws_db_instance.postgres: Still destroying... [id=db-KACTTSOUJZXSPC6GS2M36DDGXM, 00m20s elapsed]
+aws_instance.app: Still destroying... [id=i-0e3642b626b7ff173, 00m20s elapsed]
+aws_db_instance.postgres: Still destroying... [id=db-KACTTSOUJZXSPC6GS2M36DDGXM, 00m30s elapsed]
+aws_instance.app: Still destroying... [id=i-0e3642b626b7ff173, 00m30s elapsed]
+aws_instance.app: Destruction complete after 30s
+aws_db_instance.postgres: Still destroying... [id=db-KACTTSOUJZXSPC6GS2M36DDGXM, 00m43s elapsed]
+aws_db_instance.postgres: Still destroying... [id=db-KACTTSOUJZXSPC6GS2M36DDGXM, 00m53s elapsed]
+aws_db_instance.postgres: Still destroying... [id=db-KACTTSOUJZXSPC6GS2M36DDGXM, 01m03s elapsed]
+aws_db_instance.postgres: Still destroying... [id=db-KACTTSOUJZXSPC6GS2M36DDGXM, 01m16s elapsed]
+aws_db_instance.postgres: Still destroying... [id=db-KACTTSOUJZXSPC6GS2M36DDGXM, 01m26s elapsed]
+aws_db_instance.postgres: Still destroying... [id=db-KACTTSOUJZXSPC6GS2M36DDGXM, 01m36s elapsed]
+aws_db_instance.postgres: Still destroying... [id=db-KACTTSOUJZXSPC6GS2M36DDGXM, 01m49s elapsed]
+aws_db_instance.postgres: Still destroying... [id=db-KACTTSOUJZXSPC6GS2M36DDGXM, 01m59s elapsed]
+aws_db_instance.postgres: Still destroying... [id=db-KACTTSOUJZXSPC6GS2M36DDGXM, 02m09s elapsed]
+aws_db_instance.postgres: Still destroying... [id=db-KACTTSOUJZXSPC6GS2M36DDGXM, 02m22s elapsed]
+aws_db_instance.postgres: Still destroying... [id=db-KACTTSOUJZXSPC6GS2M36DDGXM, 02m32s elapsed]
+aws_db_instance.postgres: Still destroying... [id=db-KACTTSOUJZXSPC6GS2M36DDGXM, 02m42s elapsed]
+aws_db_instance.postgres: Still destroying... [id=db-KACTTSOUJZXSPC6GS2M36DDGXM, 02m52s elapsed]
+aws_db_instance.postgres: Still destroying... [id=db-KACTTSOUJZXSPC6GS2M36DDGXM, 03m04s elapsed]
+aws_db_instance.postgres: Still destroying... [id=db-KACTTSOUJZXSPC6GS2M36DDGXM, 03m14s elapsed]
+aws_db_instance.postgres: Still destroying... [id=db-KACTTSOUJZXSPC6GS2M36DDGXM, 03m24s elapsed]
+aws_db_instance.postgres: Still destroying... [id=db-KACTTSOUJZXSPC6GS2M36DDGXM, 24m50s elapsed]
+aws_db_instance.postgres: Still destroying... [id=db-KACTTSOUJZXSPC6GS2M36DDGXM, 25m03s elapsed]
+aws_db_instance.postgres: Destruction complete after 25m10s
+aws_security_group.rds: Destroying... [id=sg-09ded738ed600f1c6]
+aws_db_subnet_group.rds: Destroying... [id=p2-terraform-db-subnets]
+aws_db_subnet_group.rds: Destruction complete after 0s
+aws_security_group.rds: Destruction complete after 1s
+aws_security_group.ec2: Destroying... [id=sg-0ede489afb2fba846]
+aws_security_group.ec2: Destruction complete after 1s
+
+Destroy complete! Resources: 6 destroyed.

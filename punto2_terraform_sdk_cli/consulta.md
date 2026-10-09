@@ -59,6 +59,13 @@ Lista mínima para crear y eliminar **S3 + EC2 + RDS + red**. Donde sea posible,
 
 > Se recomienda arrancar con esta lista y ajustarla con los errores `AccessDenied` que salgan (el mensaje indica la acción faltante). También sirve el *IAM Access Analyzer → Generate policy* a partir de CloudTrail. **No** usar `AdministratorAccess`.
 
+Esta lista, en formato de política, está en [iam/politica_minima_referencia.json](iam/politica_minima_referencia.json).
+
+### Lo que se aplicó en la práctica
+`user_cli` ya tenía `AmazonS3FullAccess`, `AmazonEC2FullAccess` y `AmazonRDSFullAccess`, que cubren S3, EC2, la red y RDS (incluido `iam:CreateServiceLinkedRole` para RDS). Esas políticas se mantuvieron.
+
+Lo que **ninguna** de ellas incluye son los permisos que RDS necesita del usuario para crear la contraseña administrada en Secrets Manager. Según la documentación de RDS, son `secretsmanager:CreateSecret`, `secretsmanager:TagResource` y `kms:DescribeKey`. Por eso se agregó una única política inline, `Punto2SecretoRDS` ([iam/politica_complemento_user_cli.json](iam/politica_complemento_user_cli.json)), restringida a los secretos `rds!*`, que son los que crea RDS. Además lleva `DescribeSecret`, que se usó para verificar el secreto.
+
 ## 4. Comparación de los tres métodos
 
 | Criterio | Terraform | Boto3 (Python) | AWS CLI |
@@ -73,29 +80,45 @@ Lista mínima para crear y eliminar **S3 + EC2 + RDS + red**. Donde sea posible,
 | Curva de aprendizaje | Media | Media (requiere programar) | Baja para tareas puntuales |
 | Mejor uso | Infraestructura reproducible y versionada | Automatizaciones dentro de aplicaciones o pipelines de datos | Tareas rápidas, pruebas, scripts cortos |
 
+### Lo que se observó en la práctica
+- **Terraform** necesitó 4 archivos cortos. `terraform plan` mostró los 6 recursos antes de crearlos, y `apply`/`destroy` resolvieron solos el orden de dependencias: primero el SG de la EC2, luego el de RDS que lo referencia, y al borrar al revés. Con `terraform state list` vacío se confirma que no quedó nada administrado.
+- **Boto3** ([boto3/desplegar.py](boto3/desplegar.py)) requirió programar:
+  - el orden de creación y de borrado;
+  - las esperas (*waiters*) hasta que la EC2 esté `running` y RDS `available`/eliminada;
+  - la búsqueda de los recursos **por nombre** para poder borrarlos, porque no hay archivo de estado.
+
+  Es el más flexible: permite meter lógica, manejar errores y reutilizarlo dentro de un programa de datos.
+- **AWS CLI** ([cli/crear.sh](cli/crear.sh), [cli/eliminar.sh](cli/eliminar.sh)) se parece a Boto3, pero en Bash: cada ID se captura con `--query` y se pasa al comando siguiente, y las esperas usan `aws ... wait`. El waiter de RDS se rinde a los 30 minutos, así que la eliminación lo reintenta en un bucle.
+- **En los tres casos**, RDS fue lo más lento: crear tomó ~5 min y eliminar entre 5 y 25 min. El secreto `rds!db-…` lo creó y lo borró RDS automáticamente, sin código extra.
+- **Conclusión:** para infraestructura que se crea y destruye varias veces de forma idéntica, Terraform es el más seguro y el más corto. Boto3 conviene cuando la infraestructura forma parte de un programa. La CLI sirve para operaciones puntuales y pruebas rápidas.
+
 ## 5. Preguntas de costos
 
-Configuración de menor costo propuesta:
-- **EC2** `t3.micro` o `t4g.micro` con 8 GB gp3 e IP pública
-- **RDS** `db.t4g.micro` PostgreSQL/MySQL Single-AZ con 20 GB gp3, sin Multi-AZ y con retención de backups de 1 día
+Configuración desplegada (la de menor costo que cumple el ejercicio):
+- **EC2** `t3.micro`, Amazon Linux 2023, 8 GB gp3, **sin IPv4 pública** (no necesita internet y así se evita su cobro)
+- **RDS** PostgreSQL `db.t4g.micro` Single-AZ, 20 GB gp3 cifrados, privada, sin backups automáticos
 - **S3** vacío
-- **Red:** VPC por defecto, **sin NAT Gateway**
+- **Red:** VPC por defecto + 2 security groups + DB subnet group, **sin NAT Gateway**
 
 | Componente | Tarifa us-east-2 | Por hora |
 |---|---|---|
 | EC2 t3.micro | USD 0.0104/h | 0.0104 |
-| IPv4 pública de la EC2 | USD 0.005/h | 0.0050 |
 | EBS 8 GB gp3 | USD 0.08/GB-mes | 0.0009 |
 | RDS db.t4g.micro Single-AZ | USD 0.016/h | 0.0160 |
 | RDS 20 GB gp3 | USD 0.115/GB-mes | 0.0032 |
 | Secreto de RDS | USD 0.40/mes | 0.0005 |
-| S3 (vacío o pocos KB) | USD 0.023/GB-mes | ≈ 0 |
-| **Total** | | **≈ USD 0.036/h** |
+| S3 (vacío) | USD 0.023/GB-mes | ≈ 0 |
+| Security groups, subnet group | sin costo | 0 |
+| **Total** | | **≈ USD 0.031/h** |
+
+Si la EC2 tuviera IPv4 pública, se sumarían USD 0.005/h (≈ USD 0.036/h en total).
 
 ### ¿Cuánto costaría mantener los recursos durante una hora y durante una semana?
-- **1 hora:** ≈ **USD 0.04**
-- **1 semana (168 h):** ≈ 0.036 × 168 ≈ **USD 6.10**
-- Como referencia, **30 días** ≈ USD 26.
+- **1 hora:** ≈ **USD 0.03**
+- **1 semana (168 h):** ≈ 0.031 × 168 ≈ **USD 5.20**
+- Como referencia, **30 días** ≈ USD 22.6.
+
+**Costo real de la práctica:** cada versión (Terraform, Boto3 y CLI) estuvo activa entre ~30 y ~45 minutos, incluido el tiempo que tarda RDS en crearse y eliminarse. En total son unas 2 h × USD 0.031 ≈ **USD 0.07**, y las tres versiones se eliminaron antes de iniciar la siguiente.
 
 Si la cuenta tiene capa gratuita o créditos de plan gratuito, gran parte puede quedar cubierta, pero la estimación se reporta sin descuentos.
 

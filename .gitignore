@@ -9,6 +9,7 @@ __pycache__/
 *.tfstate
 *.tfstate.*
 *.tfvars
+tfplan
 
 # Llaves y credenciales
 *.pem

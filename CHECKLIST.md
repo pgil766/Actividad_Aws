@@ -83,29 +83,29 @@ Marca cada tarea cambiando `[ ]` por `[x]`. En GitHub también se pueden marcar 
 - [ ] Qué guarda `terraform.tfstate` y cómo evitar que tenga contraseñas (`manage_master_user_password = true` en RDS)
 
 ### IAM
-- [ ] Crear `user_cli` con permisos mínimos para S3, EC2, RDS, red (VPC, subnets, SG), Secrets Manager (lo que usa RDS) y KMS si aplica
-- [ ] Documentar cada permiso y para qué sirve
-- [ ] Verificar que todo se hace con `user_cli` (`aws sts get-caller-identity --profile user_cli`)
+- [x] Dar a `user_cli` lo necesario: conserva sus políticas FullAccess y se agrega la inline `Punto2SecretoRDS` (CreateSecret, TagResource, DescribeSecret sobre `rds!*` y kms:DescribeKey)
+- [x] Documentar cada permiso y para qué sirve
+- [x] Verificar que todo se hace con `user_cli` (`aws sts get-caller-identity --profile user_cli`)
 
 ### Versión A – Terraform
-- [ ] Escribir los `.tf`: S3 bucket, EC2 (t3.micro/t2.micro) y RDS (db.t3.micro/db.t4g.micro, 20 GB, sin Multi-AZ) + red/SG
-- [ ] Configurar RDS con `manage_master_user_password = true`
-- [ ] `terraform plan` → `terraform apply`
-- [ ] Captura de los recursos creados y del secreto que creó RDS
-- [ ] `terraform destroy` + captura
+- [x] Escribir los `.tf`: S3 bucket, EC2 (t3.micro/t2.micro) y RDS (db.t3.micro/db.t4g.micro, 20 GB, sin Multi-AZ) + red/SG
+- [x] Configurar RDS con `manage_master_user_password = true`
+- [x] `terraform plan` → `terraform apply`
+- [x] Captura de los recursos creados y del secreto que creó RDS
+- [x] `terraform destroy` + captura
 
 ### Versión B – Boto3
-- [ ] Script Python que crea los mismos tres recursos (RDS con `ManageMasterUserPassword=True`)
-- [ ] Script o función para eliminarlos
-- [ ] Capturas de la creación y la eliminación
+- [x] Script Python que crea los mismos tres recursos (RDS con `ManageMasterUserPassword=True`)
+- [x] Script o función para eliminarlos
+- [x] Capturas de la creación y la eliminación
 
 ### Versión C – AWS CLI
-- [ ] Archivo `comandos.sh` / `.ps1` con los comandos de creación (`--manage-master-user-password`)
-- [ ] Comandos de eliminación
-- [ ] Capturas de la creación y la eliminación
+- [x] Scripts `cli/crear.sh` y `cli/verificar.sh` con los comandos de creación (`--manage-master-user-password`)
+- [x] Comandos de eliminación (`cli/eliminar.sh`, `cli/verificar_eliminacion.sh`)
+- [x] Capturas de la creación y la eliminación
 
 ### Comparación
-- [ ] Tabla comparando Terraform, Boto3 y CLI (declarativo vs imperativo, estado, repetibilidad, borrado, facilidad)
+- [x] Tabla comparando Terraform, Boto3 y CLI (declarativo vs imperativo, estado, repetibilidad, borrado, facilidad)
 
 ### Preguntas de costos
 - [ ] Costo de mantener los recursos 1 hora y 1 semana
@@ -113,13 +113,13 @@ Marca cada tarea cambiando `[ ]` por `[x]`. En GitHub también se pueden marcar 
 - [ ] ¿Cuánto añade el secreto de RDS?
 
 ### Evidencias a entregar
-- [ ] Política IAM (JSON)
-- [ ] Archivos de Terraform (**sin** tfstate)
-- [ ] Programa Python
-- [ ] Comandos CLI
+- [x] Política IAM (JSON)
+- [x] Archivos de Terraform (**sin** tfstate)
+- [x] Programa Python
+- [x] Comandos CLI
 - [ ] Respuestas a las preguntas
-- [ ] Estimación de costos
-- [ ] Capturas de creación y eliminación de **las tres versiones**
+- [x] Estimación de costos
+- [x] Capturas de creación y eliminación de **las tres versiones**
 
 ---
 

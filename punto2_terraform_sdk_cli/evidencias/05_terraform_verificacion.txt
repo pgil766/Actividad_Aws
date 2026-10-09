@@ -1,0 +1,60 @@
+== Identidad
+arn:aws:iam::807872461370:user/user_cli
+
+== S3
+Bucket actividad-aws-p2-807872461370-terraform existe
+
+== EC2
+------------------------------------------------------------------------------
+|                              DescribeInstances                             |
++---------+-----------------------+----------------+------------+------------+
+| Estado  |          Id           |   IpPrivada    | IpPublica  |   Tipo     |
++---------+-----------------------+----------------+------------+------------+
+|  running|  i-0e3642b626b7ff173  |  172.31.18.161 |  None      |  t3.micro  |
++---------+-----------------------+----------------+------------+------------+
+
+== Security groups
+-------------------------------------------------------------
+|                  DescribeSecurityGroups                   |
++----------+------------------------+-----------------------+
+| Entradas |          Id            |        Nombre         |
++----------+------------------------+-----------------------+
+|  1       |  sg-09ded738ed600f1c6  |  p2-terraform-rds-sg  |
+|  0       |  sg-0ede489afb2fba846  |  p2-terraform-ec2-sg  |
++----------+------------------------+-----------------------+
+
+== RDS
+------------------------------------------------------------------------------------------------------------------------------
+|                                                     DescribeDBInstances                                                    |
++---------------+------------------------------------------------------------------------------------------------------------+
+|  Cifrada      |  True                                                                                                      |
+|  Clase        |  db.t4g.micro                                                                                              |
+|  Estado       |  available                                                                                                 |
+|  EstadoSecreto|  active                                                                                                    |
+|  Motor        |  postgres                                                                                                  |
+|  Publica      |  False                                                                                                     |
+|  Secreto      |  arn:aws:secretsmanager:us-east-2:807872461370:secret:rds!db-ed53cb24-bae1-4e36-a0b5-7c2602fa7602-2aJm6g   |
+|  SubnetGroup  |  p2-terraform-db-subnets                                                                                   |
+|  Version      |  18.3                                                                                                      |
++---------------+------------------------------------------------------------------------------------------------------------+
+
+== Secreto administrado por RDS (solo metadatos, nunca el valor)
+------------------------------------------------------------------------
+|                            DescribeSecret                            |
++----------------------+-----------------------------------------------+
+|  DiasRotacion        |  7                                            |
+|  Nombre              |  rds!db-ed53cb24-bae1-4e36-a0b5-7c2602fa7602  |
+|  RotacionActiva      |  True                                         |
+|  ServicioPropietario |  rds                                          |
++----------------------+-----------------------------------------------+
+
+== Revisión del terraform.tfstate
+Atributos con "password" en el estado:
+"get_password_data": false
+"manage_master_user_password": true
+"password": null
+"password_data": ""
+"password_wo": null
+"password_wo_version": null
+Secreto referenciado en el estado (solo ARN):
+"secret_arn": "arn:aws:secretsmanager:us-east-2:807872461370:secret:rds!db-ed53cb24-bae1-4e36-a0b5-7c2602fa7602-2aJm6g"

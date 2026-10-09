@@ -1,0 +1,21 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CrearSecretoAdministradoPorRDS",
+      "Effect": "Allow",
+      "Action": [
+        "secretsmanager:CreateSecret",
+        "secretsmanager:TagResource",
+        "secretsmanager:DescribeSecret"
+      ],
+      "Resource": "arn:aws:secretsmanager:us-east-2:807872461370:secret:rds!*"
+    },
+    {
+      "Sid": "DescribirLlaveKMSDelSecreto",
+      "Effect": "Allow",
+      "Action": "kms:DescribeKey",
+      "Resource": "*"
+    }
+  ]
+}

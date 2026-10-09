@@ -1,0 +1,50 @@
+aws_db_subnet_group.rds: Creating...
+aws_security_group.ec2: Creating...
+aws_s3_bucket.datos: Creating...
+aws_db_subnet_group.rds: Creation complete after 2s [id=p2-terraform-db-subnets]
+aws_security_group.ec2: Creation complete after 4s [id=sg-0ede489afb2fba846]
+aws_security_group.rds: Creating...
+aws_instance.app: Creating...
+aws_s3_bucket.datos: Creation complete after 4s [id=actividad-aws-p2-807872461370-terraform]
+aws_security_group.rds: Creation complete after 4s [id=sg-09ded738ed600f1c6]
+aws_db_instance.postgres: Creating...
+aws_instance.app: Still creating... [00m10s elapsed]
+aws_db_instance.postgres: Still creating... [00m10s elapsed]
+aws_instance.app: Creation complete after 14s [id=i-0e3642b626b7ff173]
+aws_db_instance.postgres: Still creating... [00m22s elapsed]
+aws_db_instance.postgres: Still creating... [00m32s elapsed]
+aws_db_instance.postgres: Still creating... [00m42s elapsed]
+aws_db_instance.postgres: Still creating... [00m55s elapsed]
+aws_db_instance.postgres: Still creating... [01m05s elapsed]
+aws_db_instance.postgres: Still creating... [01m15s elapsed]
+aws_db_instance.postgres: Still creating... [01m28s elapsed]
+aws_db_instance.postgres: Still creating... [01m38s elapsed]
+aws_db_instance.postgres: Still creating... [01m48s elapsed]
+aws_db_instance.postgres: Still creating... [01m58s elapsed]
+aws_db_instance.postgres: Still creating... [02m11s elapsed]
+aws_db_instance.postgres: Still creating... [02m21s elapsed]
+aws_db_instance.postgres: Still creating... [02m31s elapsed]
+aws_db_instance.postgres: Still creating... [02m44s elapsed]
+aws_db_instance.postgres: Still creating... [02m54s elapsed]
+aws_db_instance.postgres: Still creating... [03m04s elapsed]
+aws_db_instance.postgres: Still creating... [03m17s elapsed]
+aws_db_instance.postgres: Still creating... [03m27s elapsed]
+aws_db_instance.postgres: Still creating... [03m37s elapsed]
+aws_db_instance.postgres: Still creating... [03m50s elapsed]
+aws_db_instance.postgres: Still creating... [04m00s elapsed]
+aws_db_instance.postgres: Still creating... [04m10s elapsed]
+aws_db_instance.postgres: Still creating... [04m20s elapsed]
+aws_db_instance.postgres: Still creating... [04m33s elapsed]
+aws_db_instance.postgres: Still creating... [04m43s elapsed]
+aws_db_instance.postgres: Still creating... [04m53s elapsed]
+aws_db_instance.postgres: Creation complete after 5m5s [id=db-KACTTSOUJZXSPC6GS2M36DDGXM]
+
+Apply complete! Resources: 6 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+ec2_instance_id = "i-0e3642b626b7ff173"
+identidad = "arn:aws:iam::807872461370:user/user_cli"
+rds_endpoint = "p2-terraform-db.czaoq262qew7.us-east-2.rds.amazonaws.com"
+rds_secret_arn = "arn:aws:secretsmanager:us-east-2:807872461370:secret:rds!db-ed53cb24-bae1-4e36-a0b5-7c2602fa7602-2aJm6g"
+s3_bucket = "actividad-aws-p2-807872461370-terraform"

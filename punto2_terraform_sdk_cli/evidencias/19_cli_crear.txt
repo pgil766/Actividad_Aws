@@ -1,0 +1,14 @@
+Identidad: arn:aws:iam::807872461370:user/user_cli
+VPC por defecto: vpc-09458b3b191689ee9
+S3: bucket actividad-aws-p2-807872461370-cli creado
+Security groups: sg-07c6aca396006626a (EC2), sg-0d7b148e930e85d54 (RDS, 5432 desde EC2)
+EC2: instancia i-0f96531edb627a67e lanzada
+RDS: creando p2-cli-db (tarda unos minutos)...
+EC2: running
+RDS: available
+
+Salidas:
+  s3_bucket       = actividad-aws-p2-807872461370-cli
+  ec2_instance_id = i-0f96531edb627a67e
+  rds_endpoint    = p2-cli-db.czaoq262qew7.us-east-2.rds.amazonaws.com
+  rds_secret_arn  = arn:aws:secretsmanager:us-east-2:807872461370:secret:rds!db-07f51ebd-5f7b-445c-881d-58271f9bdd83-vG2JxP

@@ -1,0 +1,9 @@
+Identidad: arn:aws:iam::807872461370:user/user_cli
+RDS: eliminando p2-boto3-db...
+EC2: terminando i-0d761e09cc06abb44...
+EC2: terminated
+RDS: eliminada
+RDS: subnet group eliminado
+Security group p2-boto3-rds-sg eliminado
+Security group p2-boto3-ec2-sg eliminado
+S3: bucket actividad-aws-p2-807872461370-boto3 eliminado

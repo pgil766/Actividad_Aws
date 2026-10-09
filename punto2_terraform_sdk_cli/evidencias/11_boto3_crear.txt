@@ -1,0 +1,14 @@
+Identidad: arn:aws:iam::807872461370:user/user_cli
+VPC por defecto: vpc-09458b3b191689ee9 (3 subredes)
+S3: bucket actividad-aws-p2-807872461370-boto3 creado
+Security groups: sg-0f8440a6abc02bd6d (EC2), sg-09ef8dfc9980a5e03 (RDS, 5432 desde EC2)
+EC2: instancia i-0d761e09cc06abb44 lanzada
+RDS: creando p2-boto3-db (tarda unos minutos)...
+EC2: running
+RDS: available
+
+Salidas:
+  s3_bucket       = actividad-aws-p2-807872461370-boto3
+  ec2_instance_id = i-0d761e09cc06abb44
+  rds_endpoint    = p2-boto3-db.czaoq262qew7.us-east-2.rds.amazonaws.com
+  rds_secret_arn  = arn:aws:secretsmanager:us-east-2:807872461370:secret:rds!db-1135bf21-63cc-4617-8b6d-f62b963ca5e7-gIw7N5
