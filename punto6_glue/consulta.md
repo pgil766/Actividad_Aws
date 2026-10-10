@@ -56,7 +56,62 @@ Para los registros nuevos: si se agregan **archivos nuevos con el mismo esquema 
 
 No hay ninguna contraseña que guardar, así que **no se crea otro secreto**. Solo si el crawler se conectara a una fuente con usuario y contraseña (una **conexión JDBC** a RDS, Redshift, etc.), esa credencial se guardaría en **Secrets Manager** y la conexión de Glue la referenciaría.
 
-## 4. Preguntas de costos
+## 4. Práctica realizada
+
+### Permisos (solo IAM)
+- **`user_cli`**: política administrada `Punto6GlueAthena` ([iam/politica_user_cli_glue_athena.json](iam/politica_user_cli_glue_athena.json)). Permite `glue:*` y las acciones de Athena, solo en Ohio, e `iam:PassRole` **solo** para el rol del crawler. S3 ya lo cubría `AmazonS3FullAccess`.
+- **Rol del crawler `p6-glue-crawler-role`**: confianza con `glue.amazonaws.com`, más dos políticas:
+  - la administrada por AWS **`AWSGlueServiceRole`**, para escribir en el Data Catalog y en CloudWatch Logs;
+  - la inline `LeerDatosPunto6` ([iam/rol_crawler_permisos_s3.json](iam/rol_crawler_permisos_s3.json)), para leer el bucket. Hace falta porque `AWSGlueServiceRole` solo da acceso a buckets `aws-glue-*`.
+
+En la primera versión del rol faltaba `AWSGlueServiceRole`. Se detectó con `list-attached-role-policies` antes de ejecutar el crawler.
+
+### Datos
+Archivo CSV de ventas ([datos/](datos/)), con las columnas `venta_id`, `fecha`, `codigo_tienda`, `ciudad`, `producto`, `categoria`, `cantidad` y `precio_unitario`:
+- `ventas_parte1.csv`: **24 registros**, cargados al inicio en `s3://actividad-aws-p6-807872461370/datos/ventas/`;
+- `ventas_parte2.csv`: **10 registros** más, usados para probar la actualización.
+
+### Base de datos y crawler ([crear.sh](crear.sh), [ejecutar_crawler.sh](ejecutar_crawler.sh))
+- Base de datos `p6_ventas` y crawler `p6-crawler-ventas` sobre `s3://…/datos/ventas/`.
+- Política de cambios de esquema `UpdateBehavior=LOG`: en ejecuciones posteriores el crawler **no reescribe** el esquema, para no perder las correcciones manuales.
+- Primera ejecución: **SUCCEEDED en 37 s**, creó 1 tabla (`ventas`), clasificación `csv`, SerDe `LazySimpleSerDe` y encabezado detectado (`skip.header.line.count = 1`).
+
+### Esquema inferido y corrección
+
+| Columna | Inferido por el crawler | Problema detectado | Corregido |
+|---|---|---|---|
+| `fecha` | `string` | En Athena, `WHERE fecha >= DATE '2026-02-01'` falló con **`TYPE_MISMATCH: varchar <= date`** | **`date`** |
+| `codigo_tienda` | `bigint` | Los códigos `007` y `045` se leían como **`7`** y **`45`**: se pierden los ceros a la izquierda | **`string`** |
+| (estadística) `recordCount` | 23 | El archivo tiene 24 registros. Es una **estimación por muestreo**, no un conteo | No se corrige; Athena da el conteo real (24) |
+
+La corrección se aplicó con `glue.update_table` ([glue_athena.py](glue_athena.py), acción `corregir`). Capturas del antes y el después: [05](evidencias/05_esquema_inferido_antes.png) y [10](evidencias/10_esquema_corregido_despues.png).
+
+### Consultas en Athena ([07](evidencias/07_corregir_y_consultas_athena.txt))
+- **Filtro:** ventas de **Electrónica desde el 1 de febrero de 2026**. Salieron 4 ventas; la mayor fue de 14.000.000 (5 portátiles en Medellín, tienda `007`).
+- **Agrupación** por ciudad y tienda: **Medellín (`007`)** lidera en ingresos (32,8 M). **Barranquilla (`045`)** tiene más ventas (8) y más unidades (27), pero de productos más baratos.
+- Cada consulta escaneó solo **0,0014 MB**.
+
+### Agregar registros y actualizar el catálogo ([08](evidencias/08_agregar_registros_y_recrawl.txt))
+1. Se subió `ventas_parte2.csv` (10 registros) a la **misma carpeta**.
+2. Se ejecutó el crawler otra vez: **SUCCEEDED**, con 0 tablas creadas y 0 modificadas. El esquema corregido **se conservó**: `fecha date`, `codigo_tienda string`.
+3. Se verificó en Athena: el `COUNT(*)` pasó de **24 a 34**. Medellín pasó de 7 a 10 ventas y Barranquilla de 8 a 12.
+
+Conclusión: como la tabla apunta a una **carpeta**, Athena lee los archivos nuevos **aunque no se vuelva a ejecutar el crawler**. El crawler es necesario cuando aparecen columnas o particiones nuevas, o carpetas que deben convertirse en tablas.
+
+### Crawler vs creación manual ([09](evidencias/09_tabla_manual_vs_crawler.txt))
+Se creó `ventas_manual` con `CREATE EXTERNAL TABLE` en Athena, con tipos explícitos (`INT`, `DATE`, `STRING`, `BIGINT`), `ROW FORMAT DELIMITED` y `skip.header.line.count = 1`, sobre la **misma ubicación de S3**.
+
+| | `ventas` (crawler) | `ventas_manual` (DDL) |
+|---|---|---|
+| Esfuerzo | Ninguno al crear | Escribir el DDL completo |
+| Tipos | `bigint` genéricos; hubo que **corregir 2 columnas** | Exactos desde el inicio |
+| Cambios futuros | Detecta columnas y particiones nuevas (según su política) | Hay que hacer `ALTER TABLE` o `MSCK REPAIR` a mano |
+| Costo | DPU-hora por ejecución (mínimo 10 min) | USD 0 (las DDL de Athena no se cobran) |
+| Resultado | **34 registros**, del 2026-01-02 al 2026-05-22 | **34 registros**, el mismo rango |
+
+Las dos tablas son **metadatos distintos sobre los mismos archivos**: al borrar una tabla, los CSV siguen en S3.
+
+## 5. Preguntas de costos
 
 ### ¿Qué se cobra por el crawler, el catálogo, S3 y las consultas de Athena?
 
@@ -80,6 +135,17 @@ No hay ninguna contraseña que guardar, así que **no se crea otro secreto**. So
   - Seleccionar solo las columnas necesarias en lugar de `SELECT *`.
   - En el crawler: *incremental crawls* (solo carpetas nuevas) y rutas de inclusión o exclusión.
 - Con datos tan pequeños como los del taller, se paga el **mínimo de 10 MB por consulta**, así que el volumen no se nota. A escala de GB o TB es el principal factor de costo.
+
+### Costo real de la práctica
+| Concepto | Uso | Costo |
+|---|---|---|
+| Crawler | 2 ejecuciones de ~37 s, facturadas cada una con el **mínimo de 10 min** | 2 × 0,44 × 10/60 ≈ **USD 0.15** |
+| Data Catalog | 1 base de datos y 2 tablas; unos cientos de peticiones | USD 0 (dentro del millón gratis) |
+| Athena | ~15 consultas de KB, facturadas con el mínimo de 10 MB cada una | 15 × 10 MB × USD 5/TB ≈ **USD 0.0007** |
+| S3 | 2 CSV de KB y resultados de Athena, durante unas horas | ≈ USD 0 |
+| **Total** | | **≈ USD 0.15** |
+
+Al terminar se eliminaron el crawler, las 2 tablas, la base de datos y el bucket, con los datos y los resultados de Athena ([12](evidencias/12_eliminacion_y_verificacion.txt)). El rol y la política IAM no cobran.
 
 ## Fuentes
 - [AWS Glue Pricing](https://aws.amazon.com/glue/pricing/)

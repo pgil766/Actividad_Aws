@@ -1,0 +1,31 @@
+Identidad: arn:aws:iam::807872461370:user/user_cli
+Fecha:     2026-10-10 12:48 -05
+
+== EC2 en ejecución o detenidas (cobran cómputo o EBS)
+== Volúmenes EBS
+0
+== IP elásticas
+0
+== NAT Gateways activos
+0
+== Security groups del taller (p2-*, p3-*, p4-*)
+0
+
+== RDS / DocumentDB / Neptune: instancias
+== RDS / DocumentDB / Neptune: clústeres
+== Snapshots manuales de clúster
+0
+== Snapshots manuales de instancia
+1
+
+== Redshift Serverless: namespaces
+== Redshift Serverless: workgroups
+
+== Glue: crawlers del taller
+== Glue: base de datos p6_ventas
+aws: [ERROR]: An error occurred (EntityNotFoundException) when calling the GetDatabase operation: Database p6_ventas not found.
+
+== Buckets S3 del taller (actividad-aws-*)
+(fin del inventario: las listas vacías significan que no queda nada)
+
+# Nota: el snapshot manual "pgm-snapshot" (instancia "pgm", creado el 2026-09-24) es anterior al taller y no pertenece a ningún punto.

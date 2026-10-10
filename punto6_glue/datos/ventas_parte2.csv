@@ -1,0 +1,11 @@
+venta_id,fecha,codigo_tienda,ciudad,producto,categoria,cantidad,precio_unitario
+25,2026-05-13,007,Medellín,Balón,Deportes,4,85000
+26,2026-05-21,045,Barranquilla,Lámpara,Hogar,1,95000
+27,2026-04-20,045,Barranquilla,Lámpara,Hogar,4,95000
+28,2026-05-18,007,Medellín,Audífonos,Electrónica,3,180000
+29,2026-05-17,045,Barranquilla,Lámpara,Hogar,2,95000
+30,2026-05-05,007,Medellín,Portátil,Electrónica,1,2800000
+31,2026-05-22,031,Cali,Balón,Deportes,3,85000
+32,2026-05-03,012,Bogotá,Silla,Hogar,4,420000
+33,2026-04-17,031,Cali,Balón,Deportes,4,85000
+34,2026-05-02,045,Barranquilla,Balón,Deportes,3,85000

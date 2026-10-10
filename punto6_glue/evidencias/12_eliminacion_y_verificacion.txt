@@ -1,0 +1,14 @@
+Identidad: arn:aws:iam::807872461370:user/user_cli
+Glue: crawler p6-crawler-ventas eliminado
+Glue: tabla p6_ventas.ventas eliminada
+Glue: tabla p6_ventas.ventas_manual eliminada
+Glue: base de datos p6_ventas eliminada
+S3: bucket actividad-aws-p6-807872461370 eliminado
+
+######## Verificación
+== Crawler
+aws: [ERROR]: An error occurred (EntityNotFoundException) when calling the GetCrawler operation: Crawler entry with name p6-crawler-ventas does not exist
+== Base de datos
+aws: [ERROR]: An error occurred (EntityNotFoundException) when calling the GetDatabase operation: Database p6_ventas not found.
+== Bucket
+aws: [ERROR]: An error occurred (404) when calling the HeadBucket operation: Not Found

@@ -1,0 +1,39 @@
+$ python punto6_glue/glue_athena.py corregir
+Identidad AWS: arn:aws:iam::807872461370:user/user_cli
+Antes:   Esquema de p6_ventas.ventas: venta_id bigint, fecha string, codigo_tienda bigint, ciudad string, producto string, categoria string, cantidad bigint, precio_unitario bigint
+Después: Esquema de p6_ventas.ventas: venta_id bigint, fecha date, codigo_tienda string, ciudad string, producto string, categoria string, cantidad bigint, precio_unitario bigint
+
+$ python punto6_glue/glue_athena.py consultas
+Identidad AWS: arn:aws:iam::807872461370:user/user_cli
+
+== Conteo de registros  [0.0014 MB escaneados]
+   SQL: SELECT COUNT(*) AS registros FROM ventas
+   registros
+   ---------
+   24       
+
+== Muestra: codigo_tienda conserva los ceros y fecha es DATE  [0.0014 MB escaneados]
+   SQL: SELECT * FROM ventas ORDER BY venta_id LIMIT 3
+   venta_id | fecha      | codigo_tienda | ciudad       | producto  | categoria   | cantidad | precio_unitario
+   ---------+------------+---------------+--------------+-----------+-------------+----------+----------------
+   1        | 2026-02-18 | 007           | Medellín     | Lámpara   | Hogar       | 3        | 95000          
+   2        | 2026-01-10 | 007           | Medellín     | Portátil  | Electrónica | 5        | 2800000        
+   3        | 2026-01-24 | 045           | Barranquilla | Bicicleta | Deportes    | 3        | 1350000        
+
+== Filtro: ventas de Electrónica desde el 1 de febrero de 2026  [0.0014 MB escaneados]
+   SQL: SELECT venta_id, fecha, codigo_tienda, ciudad, producto, cantidad, cantidad * precio_unitario AS total FROM ventas WHERE categoria = 'Electrónica' AND fecha >= DATE '2026-02-01' ORDER BY total DESC
+   venta_id | fecha      | codigo_tienda | ciudad       | producto  | cantidad | total   
+   ---------+------------+---------------+--------------+-----------+----------+---------
+   15       | 2026-02-02 | 007           | Medellín     | Portátil  | 5        | 14000000
+   16       | 2026-02-08 | 012           | Bogotá       | Portátil  | 3        | 8400000 
+   10       | 2026-03-02 | 031           | Cali         | Portátil  | 1        | 2800000 
+   12       | 2026-02-02 | 045           | Barranquilla | Audífonos | 5        | 900000  
+
+== Agrupación: ventas, unidades e ingresos por ciudad/tienda  [0.0014 MB escaneados]
+   SQL: SELECT ciudad, codigo_tienda, COUNT(*) AS ventas, SUM(cantidad) AS unidades, SUM(cantidad * precio_unitario) AS ingresos FROM ventas GROUP BY ciudad, codigo_tienda ORDER BY ingresos DESC
+   ciudad       | codigo_tienda | ventas | unidades | ingresos
+   -------------+---------------+--------+----------+---------
+   Medellín     | 007           | 7      | 23       | 32820000
+   Barranquilla | 045           | 8      | 27       | 18015000
+   Bogotá       | 012           | 5      | 13       | 14595000
+   Cali         | 031           | 4      | 13       | 10585000

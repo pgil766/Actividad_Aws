@@ -59,7 +59,6 @@ Lista mínima para crear y eliminar **S3 + EC2 + RDS + red**. Donde sea posible,
 
 > Se recomienda arrancar con esta lista y ajustarla con los errores `AccessDenied` que salgan (el mensaje indica la acción faltante). También sirve el *IAM Access Analyzer → Generate policy* a partir de CloudTrail. **No** usar `AdministratorAccess`.
 
-Esta lista, en formato de política, está en [iam/politica_minima_referencia.json](iam/politica_minima_referencia.json).
 
 ### Lo que se aplicó en la práctica
 `user_cli` ya tenía `AmazonS3FullAccess`, `AmazonEC2FullAccess` y `AmazonRDSFullAccess`, que cubren S3, EC2, la red y RDS (incluido `iam:CreateServiceLinkedRole` para RDS). Esas políticas se mantuvieron.

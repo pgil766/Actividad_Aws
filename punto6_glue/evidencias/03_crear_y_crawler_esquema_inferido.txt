@@ -1,0 +1,44 @@
+Identidad: arn:aws:iam::807872461370:user/user_cli
+S3: bucket actividad-aws-p6-807872461370 creado
+S3: s3://actividad-aws-p6-807872461370/datos/ventas/ventas_parte1.csv
+Glue: base de datos p6_ventas creada
+Glue: crawler p6-crawler-ventas creado
+Glue: crawler p6-crawler-ventas en ejecución...
+-------------------------------------------------------
+|                     GetCrawler                      |
++-----------+-----------------------------+-----------+
+|  Estado   |           Inicio            |  Mensaje  |
++-----------+-----------------------------+-----------+
+|  SUCCEEDED|  2026-10-10T12:33:58-05:00  |  None     |
++-----------+-----------------------------+-----------+
+--------------------------------------------------------------------
+|                         GetCrawlerMetrics                        |
++-------------------------+----------------------+-----------------+
+| SegundosUltimaEjecucion | TablasActualizadas   |  TablasCreadas  |
++-------------------------+----------------------+-----------------+
+|  37.105                 |  0                   |  1              |
++-------------------------+----------------------+-----------------+
+== Tablas en p6_ventas
+ventas
+== Esquema de la tabla ventas
+-------------------------------------------------------------------------
+|                               GetTable                                |
++---------------+-------------------------------------------------------+
+|  Clasificacion|  csv                                                  |
+|  Encabezado   |  1                                                    |
+|  Registros    |  23                                                   |
+|  SerDe        |  org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe   |
+|  Ubicacion    |  s3://actividad-aws-p6-807872461370/datos/ventas/     |
++---------------+-------------------------------------------------------+
+-------------------------------
+|          GetTable           |
++------------------+----------+
+|  venta_id        |  bigint  |
+|  fecha           |  string  |
+|  codigo_tienda   |  bigint  |
+|  ciudad          |  string  |
+|  producto        |  string  |
+|  categoria       |  string  |
+|  cantidad        |  bigint  |
+|  precio_unitario |  bigint  |
++------------------+----------+

@@ -1,0 +1,81 @@
+$ python glue_athena.py agregar
+Identidad AWS: arn:aws:iam::807872461370:user/user_cli
+S3: s3://actividad-aws-p6-807872461370/datos/ventas/ventas_parte2.csv (10 registros nuevos)
+
+$ bash ejecutar_crawler.sh   # segunda ejecución del crawler
+Glue: crawler p6-crawler-ventas en ejecución...
+-------------------------------------------------------
+|                     GetCrawler                      |
++-----------+-----------------------------+-----------+
+|  Estado   |           Inicio            |  Mensaje  |
++-----------+-----------------------------+-----------+
+|  SUCCEEDED|  2026-10-10T12:39:05-05:00  |  None     |
++-----------+-----------------------------+-----------+
+--------------------------------------------------------------------
+|                         GetCrawlerMetrics                        |
++-------------------------+----------------------+-----------------+
+| SegundosUltimaEjecucion | TablasActualizadas   |  TablasCreadas  |
++-------------------------+----------------------+-----------------+
+|  36.141                 |  0                   |  0              |
++-------------------------+----------------------+-----------------+
+== Tablas en p6_ventas
+ventas
+== Esquema de la tabla ventas
+-------------------------------------------------------------------------
+|                               GetTable                                |
++---------------+-------------------------------------------------------+
+|  Clasificacion|  csv                                                  |
+|  Encabezado   |  1                                                    |
+|  Registros    |  23                                                   |
+|  SerDe        |  org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe   |
+|  Ubicacion    |  s3://actividad-aws-p6-807872461370/datos/ventas/     |
++---------------+-------------------------------------------------------+
+-------------------------------
+|          GetTable           |
++------------------+----------+
+|  venta_id        |  bigint  |
+|  fecha           |  date    |
+|  codigo_tienda   |  string  |
+|  ciudad          |  string  |
+|  producto        |  string  |
+|  categoria       |  string  |
+|  cantidad        |  bigint  |
+|  precio_unitario |  bigint  |
++------------------+----------+
+
+$ python glue_athena.py consultas   # después de agregar registros
+Identidad AWS: arn:aws:iam::807872461370:user/user_cli
+
+== Conteo de registros  [0.0020 MB escaneados]
+   SQL: SELECT COUNT(*) AS registros FROM ventas
+   registros
+   ---------
+   34       
+
+== Muestra: codigo_tienda conserva los ceros y fecha es DATE  [0.0020 MB escaneados]
+   SQL: SELECT * FROM ventas ORDER BY venta_id LIMIT 3
+   venta_id | fecha      | codigo_tienda | ciudad       | producto  | categoria   | cantidad | precio_unitario
+   ---------+------------+---------------+--------------+-----------+-------------+----------+----------------
+   1        | 2026-02-18 | 007           | Medellín     | Lámpara   | Hogar       | 3        | 95000          
+   2        | 2026-01-10 | 007           | Medellín     | Portátil  | Electrónica | 5        | 2800000        
+   3        | 2026-01-24 | 045           | Barranquilla | Bicicleta | Deportes    | 3        | 1350000        
+
+== Filtro: ventas de Electrónica desde el 1 de febrero de 2026  [0.0020 MB escaneados]
+   SQL: SELECT venta_id, fecha, codigo_tienda, ciudad, producto, cantidad, cantidad * precio_unitario AS total FROM ventas WHERE categoria = 'Electrónica' AND fecha >= DATE '2026-02-01' ORDER BY total DESC
+   venta_id | fecha      | codigo_tienda | ciudad       | producto  | cantidad | total   
+   ---------+------------+---------------+--------------+-----------+----------+---------
+   15       | 2026-02-02 | 007           | Medellín     | Portátil  | 5        | 14000000
+   16       | 2026-02-08 | 012           | Bogotá       | Portátil  | 3        | 8400000 
+   30       | 2026-05-05 | 007           | Medellín     | Portátil  | 1        | 2800000 
+   10       | 2026-03-02 | 031           | Cali         | Portátil  | 1        | 2800000 
+   12       | 2026-02-02 | 045           | Barranquilla | Audífonos | 5        | 900000  
+   28       | 2026-05-18 | 007           | Medellín     | Audífonos | 3        | 540000  
+
+== Agrupación: ventas, unidades e ingresos por ciudad/tienda  [0.0020 MB escaneados]
+   SQL: SELECT ciudad, codigo_tienda, COUNT(*) AS ventas, SUM(cantidad) AS unidades, SUM(cantidad * precio_unitario) AS ingresos FROM ventas GROUP BY ciudad, codigo_tienda ORDER BY ingresos DESC
+   ciudad       | codigo_tienda | ventas | unidades | ingresos
+   -------------+---------------+--------+----------+---------
+   Medellín     | 007           | 10     | 31       | 36500000
+   Barranquilla | 045           | 12     | 37       | 18935000
+   Bogotá       | 012           | 6      | 17       | 16275000
+   Cali         | 031           | 6      | 20       | 11180000

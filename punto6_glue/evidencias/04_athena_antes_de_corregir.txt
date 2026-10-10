@@ -1,0 +1,19 @@
+# Consultas en Athena ANTES de corregir el esquema
+
+== codigo_tienda como bigint: 007 aparece como 7  [0.0014 MB escaneados]
+   SQL: SELECT venta_id, fecha, codigo_tienda, ciudad FROM ventas ORDER BY venta_id LIMIT 4
+   venta_id | fecha      | codigo_tienda | ciudad      
+   ---------+------------+---------------+-------------
+   1        | 2026-02-18 | 7             | Medellín    
+   2        | 2026-01-10 | 7             | Medellín    
+   3        | 2026-01-24 | 45            | Barranquilla
+   4        | 2026-02-01 | 7             | Medellín    
+
+== Conteo real (el catálogo estimó 23)  [0.0014 MB escaneados]
+   SQL: SELECT COUNT(*) AS registros FROM ventas
+   registros
+   ---------
+   24       
+
+== fecha como string: comparación con DATE
+   ERROR: FAILED: TYPE_MISMATCH: line 1:41: Cannot apply operator: varchar <= date

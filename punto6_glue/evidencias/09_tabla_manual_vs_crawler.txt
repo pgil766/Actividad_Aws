@@ -1,0 +1,14 @@
+$ python glue_athena.py manual
+Identidad AWS: arn:aws:iam::807872461370:user/user_cli
+
+== DDL manual: CREATE EXTERNAL TABLE ventas_manual  [0.0000 MB escaneados]
+   SQL: CREATE EXTERNAL TABLE ventas_manual ( venta_id INT, fecha DATE, codigo_tienda STRING, ciudad STRING, producto STRING, categoria STRING, cantidad INT, precio_unitario BIGINT ) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' STORED AS TEXTFILE LOCATION 's3://actividad-aws-p6-807872461370/datos/ventas/' TBLPROPERTIES ('skip.header.line.count' = '1')
+Esquema de p6_ventas.ventas: venta_id bigint, fecha date, codigo_tienda string, ciudad string, producto string, categoria string, cantidad bigint, precio_unitario bigint
+Esquema de p6_ventas.ventas_manual: venta_id int, fecha date, codigo_tienda string, ciudad string, producto string, categoria string, cantidad int, precio_unitario bigint
+
+== Comparación: las dos tablas leen los mismos archivos  [0.0039 MB escaneados]
+   SQL: SELECT 'crawler' AS tabla, COUNT(*) AS registros, MIN(fecha) AS desde, MAX(fecha) AS hasta FROM ventas UNION ALL SELECT 'manual', COUNT(*), MIN(fecha), MAX(fecha) FROM ventas_manual
+   tabla   | registros | desde      | hasta     
+   --------+-----------+------------+-----------
+   manual  | 34        | 2026-01-02 | 2026-05-22
+   crawler | 34        | 2026-01-02 | 2026-05-22
