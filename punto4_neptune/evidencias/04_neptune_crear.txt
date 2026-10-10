@@ -1,0 +1,27 @@
+Identidad: arn:aws:iam::807872461370:user/user_cli
+VPC: vpc-09458b3b191689ee9 · SG: sg-0bef1a743ccc6f4a1
+Subnet group p4-neptune-subnets creado
+Clúster p4-neptune creado (IAM obligatoria, cifrado)
+Instancia p4-neptune-instancia (db.t4g.medium, acceso público) creándose...
+Neptune: disponible
+
+-----------------------------------------------------------------------------------------
+|                                  DescribeDBClusters                                   |
++------------------+--------------------------------------------------------------------+
+|  AutenticacionIAM|  True                                                              |
+|  Cifrado         |  True                                                              |
+|  Endpoint        |  p4-neptune.cluster-czaoq262qew7.us-east-2.neptune.amazonaws.com   |
+|  Estado          |  available                                                         |
+|  Puerto          |  8182                                                              |
+|  SG              |  sg-0bef1a743ccc6f4a1                                              |
+|  Version         |  1.4.8.1                                                           |
++------------------+--------------------------------------------------------------------+
+-------------------------------------------
+|           DescribeDBInstances           |
++----------------+------------------------+
+|  AccesoPublico |  True                  |
+|  Clase         |  db.t4g.medium         |
+|  Estado        |  available             |
+|  Instancia     |  p4-neptune-instancia  |
+|  Zona          |  us-east-2a            |
++----------------+------------------------+

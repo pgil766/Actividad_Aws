@@ -1,0 +1,19 @@
+Identidad: arn:aws:iam::807872461370:user/user_cli
+Neptune: eliminando instancia p4-neptune-instancia...
+Neptune: instancia p4-neptune-instancia eliminada
+Neptune: eliminando clúster p4-neptune...
+Neptune: clúster eliminado
+Subnet group p4-neptune-subnets eliminado
+Security group p4-neptune-sg eliminado
+
+######## Verificación
+== Clúster
+aws: [ERROR]: An error occurred (DBClusterNotFoundFault) when calling the DescribeDBClusters operation: DBCluster p4-neptune not found.
+== Instancia p4-neptune-instancia
+aws: [ERROR]: An error occurred (DBInstanceNotFound) when calling the DescribeDBInstances operation: DBInstance p4-neptune-instancia not found.
+== Subnet group
+aws: [ERROR]: An error occurred (DBSubnetGroupNotFoundFault) when calling the DescribeDBSubnetGroups operation: DB Subnet group 'p4-neptune-subnets' not found.
+== Security group p4-neptune-sg
+0
+== Snapshots manuales
+0

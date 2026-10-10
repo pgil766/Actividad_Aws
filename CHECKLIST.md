@@ -170,30 +170,30 @@ Marca cada tarea cambiando `[ ]` por `[x]`. En GitHub también se pueden marcar 
 - [ ] Responder: ¿es necesaria la EC2? ¿Hay otra forma? (endpoint público con IAM, VPN, Neptune Notebook/Workbench, Lambda, etc.)
 
 ### Despliegue
-- [ ] Crear el clúster Neptune con la configuración más barata
-- [ ] Configurar el acceso elegido (EC2 + túnel al puerto 8182, o endpoint público)
-- [ ] Documentar VPC, subnets, tablas de rutas, SG y autenticación (IAM o ninguna)
+- [x] Crear el clúster Neptune con la configuración más barata
+- [x] Configurar el acceso elegido (EC2 + túnel al puerto 8182, o endpoint público)
+- [x] Documentar VPC, subnets, tablas de rutas, SG y autenticación (IAM o ninguna)
 
 ### Práctica con Python
-- [ ] Diseñar un grafo con al menos **10 vértices** y **15 aristas** (hacer el dibujo del modelo)
-- [ ] Insertar los datos
-- [ ] 3 consultas que **recorran relaciones** (por ejemplo amigos de amigos o caminos)
+- [x] Diseñar un grafo con al menos **10 vértices** y **15 aristas** (hacer el dibujo del modelo)
+- [x] Insertar los datos
+- [x] 3 consultas que **recorran relaciones** (por ejemplo amigos de amigos o caminos)
 
 ### Limpieza
-- [ ] Borrar el clúster, las instancias, la EC2 si se usó y los SG + capturas
+- [x] Borrar el clúster, la instancia, el subnet group y el SG (no se usó EC2) + evidencia
 
 ### Preguntas de costos
-- [ ] ¿Cuánto cuestan el cómputo y el almacenamiento?
-- [ ] ¿Tu método de conexión agrega una EC2?
-- [ ] ¿Qué se sigue cobrando mientras no ejecutas consultas?
+- [x] ¿Cuánto cuestan el cómputo y el almacenamiento?
+- [x] ¿Tu método de conexión agrega una EC2?
+- [x] ¿Qué se sigue cobrando mientras no ejecutas consultas?
 
 ### Evidencias a entregar
-- [ ] Respuestas a las preguntas
-- [ ] Modelo del grafo (diagrama)
-- [ ] Diagrama de la arquitectura de acceso
-- [ ] Costos
-- [ ] Código, consultas y resultados
-- [ ] Capturas de la eliminación
+- [x] Respuestas a las preguntas
+- [x] Modelo del grafo (diagrama)
+- [x] Diagrama de la arquitectura de acceso
+- [x] Costos
+- [x] Código, consultas y resultados
+- [x] Capturas de la eliminación
 
 ---
 

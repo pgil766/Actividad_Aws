@@ -1,0 +1,6 @@
+$ curl -s https://p4-neptune.cluster-czaoq262qew7.us-east-2.neptune.amazonaws.com:8182/status   # sin firma IAM
+{"detailedMessage":"Missing Authentication Token","code":"AccessDeniedException","requestId":"eed0934d-ce45-2d86-1371-feffc8e5b38c","message":"Missing Authentication Token"}
+HTTP 403
+
+$ getent hosts p4-neptune.cluster-czaoq262qew7.us-east-2.neptune.amazonaws.com   # resuelve a IP pública desde fuera de la VPC
+18.227.234.170  ec2-18-227-234-170.us-east-2.compute.amazonaws.com p4-neptune.cluster-czaoq262qew7.us-east-2.neptune.amazonaws.com p4-neptune-instancia.czaoq262qew7.us-east-2.neptune.amazonaws.com

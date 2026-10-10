@@ -1,0 +1,28 @@
+$ aws ec2 describe-route-tables (VPC por defecto)
+[
+    {
+        "TablaDeRutas": "rtb-06dafe95b730021da",
+        "Principal": true,
+        "Rutas": [
+            [
+                "172.31.0.0/16",
+                "local",
+                "active"
+            ],
+            [
+                "0.0.0.0/0",
+                "igw-07357cd64dd820658",
+                "active"
+            ]
+        ]
+    }
+]
+
+$ aws ec2 describe-subnets (subredes del grupo p4-neptune-subnets)
+----------------------------------------------------------------------
+|                           DescribeSubnets                          |
++---------------------------+-------------+------------------+-------+
+|  subnet-07aa0649249241718 |  us-east-2b |  172.31.16.0/20  |  True |
+|  subnet-037a809b53ab784bf |  us-east-2a |  172.31.0.0/20   |  True |
+|  subnet-03034a34079cd1217 |  us-east-2c |  172.31.32.0/20  |  True |
++---------------------------+-------------+------------------+-------+

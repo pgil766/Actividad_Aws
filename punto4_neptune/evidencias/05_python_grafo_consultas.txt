@@ -1,0 +1,22 @@
+$ python punto4_neptune/neptune_grafo.py
+Identidad AWS: arn:aws:iam::807872461370:user/user_cli
+Endpoint:      https://p4-neptune.cluster-czaoq262qew7.us-east-2.neptune.amazonaws.com:8182
+Neptune:       healthy · motor 1.4.8.1.R1 · IAM enabled
+
+Grafo cargado: 12 vértices y 19 aristas
+
+== Aristas por tipo
+   {'tipo': 'AMIGO_DE', 'cantidad': 6}
+   {'tipo': 'INSCRITO_EN', 'cantidad': 7}
+   {'tipo': 'VIVE_EN', 'cantidad': 6}
+
+== Consulta 1 · Amigos de amigos de Ana (posibles nuevas amistades)
+   {'sugerido': 'Diego', 'en_comun': ['Carla']}
+
+== Consulta 2 · Compañeros de curso de Ana y la ciudad donde viven
+   {'curso': 'Bases de Datos NoSQL', 'companero': 'Diego', 'ciudad': 'Cali'}
+   {'curso': 'Ingeniería de Datos', 'companero': 'Bruno', 'ciudad': 'Bogotá'}
+   {'curso': 'Ingeniería de Datos', 'companero': 'Elena', 'ciudad': 'Bogotá'}
+
+== Consulta 3 · Cadena de amistad más corta entre Ana y Felipe
+   {'cadena': ['Ana', 'Carla', 'Diego', 'Elena', 'Felipe'], 'saltos': 4}

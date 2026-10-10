@@ -53,7 +53,7 @@ Almacenamiento **USD 0.10/GB-mes** y E/S **USD 0.20 por millón** en ambos casos
 5. **SSM Session Manager (port forwarding):** evita abrir el puerto 22, pero igual necesita una EC2.
 6. **Lambda o API Gateway** dentro de la VPC como intermediario.
 
-**Opción elegida: [COMPLETAR: endpoint público o túnel]**. Documentar la VPC, las subredes usadas, la tabla de rutas (ruta al IGW), los SG y el método de autenticación (IAM/SigV4).
+**Opción elegida: endpoint público de Neptune con autenticación IAM.** Se usó la versión 1.4.8.1. La instancia se creó con `--publicly-accessible` en las subredes por defecto de la VPC `vpc-09458b3b191689ee9`, que son públicas porque su tabla de rutas `rtb-06dafe95b730021da` tiene `0.0.0.0/0 → igw-07357cd64dd820658`. El security group `p4-neptune-sg` solo admite TCP 8182 desde la IP del PC. La autenticación es IAM: cada consulta se firma con SigV4 usando `user_cli`, que tiene la política `Punto4ConsultarNeptune` (`neptune-db:*`). Una petición sin firma fue rechazada con **HTTP 403 AccessDeniedException**. El diagrama y el detalle están en [modelo_y_arquitectura.md](modelo_y_arquitectura.md).
 
 ## 5. Preguntas de costos
 
@@ -79,6 +79,24 @@ Si se dejara encendida **un mes**: `db.t4g.medium` ≈ USD 68; Serverless con 1 
 - **Almacenamiento** del volumen del clúster y **snapshots manuales**, incluidos los que quedan después de borrar el clúster si se pide snapshot final.
 - Si se usó túnel: la **EC2**, su **IPv4 pública** y su **volumen EBS**.
 - Un clúster **detenido** no cobra cómputo pero sí almacenamiento, y AWS lo vuelve a encender a los 7 días. Por eso, al terminar se **elimina**.
+
+### Costo real de la práctica
+Configuración desplegada: 1 instancia **`db.t4g.medium`**, sin réplicas, con acceso público, IAM y almacenamiento estándar. No hubo EC2. El clúster estuvo activo alrededor de **1 hora**, desde la creación hasta la eliminación.
+
+La cuenta tenía disponible la **prueba gratuita de Neptune**, que cubre 750 h de `db.t4g.medium` durante 30 días, así que el costo real fue **≈ USD 0**. La columna "Sin prueba gratuita" queda como referencia.
+
+| Concepto | Cálculo | Sin prueba gratuita | Con prueba gratuita |
+|---|---|---|---|
+| Instancia `db.t4g.medium` | 1 h × USD 0.093 | USD 0.09 | USD 0 (750 h gratis) |
+| Almacenamiento | 12 vértices y 19 aristas (KB) × USD 0.10/GB-mes | ≈ USD 0 | USD 0 |
+| E/S | Unas pocas decenas de consultas × USD 0.20/millón | ≈ USD 0 | USD 0 |
+| EC2 / túnel | No se usó (endpoint público) | USD 0 | USD 0 |
+| Transferencia a internet | Respuestas de KB | ≈ USD 0 | ≈ USD 0 |
+| **Total** | | **≈ USD 0.09** | **≈ USD 0** |
+
+Con Serverless (mínimo 1 NCU), la misma hora habría costado ≈ USD 0.16 y no entra en la prueba gratuita. Por eso se eligió aprovisionado.
+
+Al terminar se eliminaron la instancia, el clúster (**sin snapshot final**), el grupo de subredes y el security group. Si queda un snapshot o un clúster detenido, se sigue cobrando el almacenamiento.
 
 ## Fuentes
 - [Amazon Neptune Pricing](https://aws.amazon.com/neptune/pricing/)
