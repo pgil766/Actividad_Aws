@@ -1,0 +1,4 @@
+Identidad: arn:aws:iam::807872461370:user/user_cli
+S3: bucket actividad-aws-p5-807872461370 creado
+
+aws: [ERROR]: An error occurred (ConflictException) when calling the CreateNamespace operation: Unable to create namespace credential secret: Amazon Redshift can't access the secret for this namespace. Make sure you have the necessary permissions and try again.

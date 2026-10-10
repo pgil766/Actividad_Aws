@@ -1,0 +1,13 @@
+cliente_id,nombre,ciudad,segmento,fecha_registro
+1,Ana Gómez,Medellín,Minorista,2025-08-03
+2,Bruno Díaz,Bogotá,Corporativo,2025-01-09
+3,Carla Ruiz,Medellín,Minorista,2024-07-06
+4,Diego Mora,Cali,Pyme,2024-06-26
+5,Elena Vargas,Bogotá,Corporativo,2024-02-09
+6,Felipe Ríos,Cali,Minorista,2025-08-19
+7,Gloria Peña,Barranquilla,Pyme,2025-04-18
+8,Hugo Castro,Bogotá,Minorista,2024-03-27
+9,Isabel León,Medellín,Corporativo,2024-03-06
+10,Jorge Salas,Barranquilla,Minorista,2024-05-12
+11,Karen Ortiz,Cali,Pyme,2024-09-28
+12,Luis Medina,Medellín,Pyme,2024-04-25

@@ -205,39 +205,39 @@ Marca cada tarea cambiando `[ ]` por `[x]`. En GitHub también se pueden marcar 
 - [ ] Serverless vs aprovisionado: justificar la elección (revisar si tu cuenta tiene créditos de prueba de Serverless)
 
 ### Despliegue
-- [ ] Crear Redshift (Serverless: namespace + workgroup con la base RPU mínima) y la contraseña de admin **administrada en Secrets Manager**
-- [ ] Crear un rol IAM que permita a Redshift leer de S3 y asociarlo
+- [x] Crear Redshift (Serverless: namespace + workgroup con la base RPU mínima) y la contraseña de admin **administrada en Secrets Manager**
+- [x] Crear un rol IAM que permita a Redshift leer de S3 y asociarlo
 
 ### Datos y programa Python (Boto3)
-- [ ] Preparar un dataset con al menos **2 tablas relacionadas** (CSV)
-- [ ] El programa sube los CSV a S3
-- [ ] Crea las tablas (`CREATE TABLE`)
-- [ ] Carga los datos con `COPY`
-- [ ] Ejecuta consultas con **filtro**, **JOIN** y **agregación**
-- [ ] Usa la **Redshift Data API** (`execute_statement` → `describe_statement` → `get_statement_result`) con `SecretArn`
-- [ ] (Opcional) Revisar en Query Editor v2
+- [x] Preparar un dataset con al menos **2 tablas relacionadas** (CSV)
+- [x] El programa sube los CSV a S3
+- [x] Crea las tablas (`CREATE TABLE`)
+- [x] Carga los datos con `COPY`
+- [x] Ejecuta consultas con **filtro**, **JOIN** y **agregación**
+- [x] Usa la **Redshift Data API** (`execute_statement` → `describe_statement` → `get_statement_result`) con `SecretArn`
+- [ ] (Opcional) Revisar en Query Editor v2 — no se usó: requiere permisos `sqlworkbench:*` y los resultados se obtuvieron por la Data API
 
 ### Análisis
-- [ ] Explicar qué pregunta responde cada consulta e interpretar los resultados
-- [ ] (Opcional) Si te conectas con un cliente SQL, documentar la red y el SG
+- [x] Explicar qué pregunta responde cada consulta e interpretar los resultados
+- [ ] (Opcional) Cliente SQL externo — no aplica: el workgroup no es público y se usó la Data API
 
 ### Limpieza
-- [ ] Borrar el workgroup y el namespace (o el clúster), los snapshots, el bucket S3 y el rol + capturas
+- [x] Borrar el workgroup y el namespace (sin snapshot), el bucket S3 y los secretos (incluido el huérfano) + evidencia. El rol IAM y la política `Punto5Redshift` no cobran (los puede borrar el admin)
 
 ### Preguntas de costos
-- [ ] ¿Qué modalidad cuesta menos?
-- [ ] ¿Cómo se cobran el cómputo y el almacenamiento?
-- [ ] ¿Qué puede seguir cobrando después de las consultas?
+- [x] ¿Qué modalidad cuesta menos?
+- [x] ¿Cómo se cobran el cómputo y el almacenamiento?
+- [x] ¿Qué puede seguir cobrando después de las consultas?
 
 ### Evidencias a entregar
-- [ ] Respuestas a las preguntas
-- [ ] Dataset (CSV)
-- [ ] Instrucciones de carga (`COPY`)
-- [ ] Consultas SQL
-- [ ] Resultados interpretados
-- [ ] Comparación con RDS
-- [ ] Estimación de costos
-- [ ] Capturas de la eliminación
+- [x] Respuestas a las preguntas
+- [x] Dataset (CSV)
+- [x] Instrucciones de carga (`COPY`)
+- [x] Consultas SQL
+- [x] Resultados interpretados
+- [x] Comparación con RDS
+- [x] Estimación de costos
+- [x] Capturas de la eliminación
 
 ---
 

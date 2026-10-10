@@ -1,0 +1,25 @@
+Identidad: arn:aws:iam::807872461370:user/user_cli
+S3: bucket actividad-aws-p5-807872461370 ya existe
+Namespace p5-namespace creado (contraseña de admin administrada en Secrets Manager)
+Workgroup p5-workgroup (4 RPU, no público) creándose...
+Workgroup disponible
+
+----------------------------------------------------------------------------------------------------------------
+|                                                 GetNamespace                                                 |
++---------------+----------------------------------------------------------------------------------------------+
+|  Admin        |  rsadmin                                                                                     |
+|  BaseDeDatos  |  actividad                                                                                   |
+|  Estado       |  AVAILABLE                                                                                   |
+|  Namespace    |  p5-namespace                                                                                |
+|  RolPorDefecto|  arn:aws:iam::807872461370:role/p5-redshift-s3-role                                          |
+|  SecretoAdmin |  arn:aws:secretsmanager:us-east-2:807872461370:secret:redshift!p5-namespace-rsadmin-AZJviR   |
++---------------+----------------------------------------------------------------------------------------------+
+-----------------------------------------------------------------------------------------------
+|                                        GetWorkgroup                                         |
++------------------+--------------------------------------------------------------------------+
+|  CapacidadBaseRPU|  4                                                                       |
+|  Endpoint        |  p5-workgroup.807872461370.us-east-2.redshift-serverless.amazonaws.com   |
+|  Estado          |  AVAILABLE                                                               |
+|  Publico         |  False                                                                   |
+|  Workgroup       |  p5-workgroup                                                            |
++------------------+--------------------------------------------------------------------------+

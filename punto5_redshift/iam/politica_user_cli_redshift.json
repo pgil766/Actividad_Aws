@@ -1,0 +1,77 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AdministrarRedshiftServerlessEnOhio",
+      "Effect": "Allow",
+      "Action": "redshift-serverless:*",
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:RequestedRegion": "us-east-2"
+        }
+      }
+    },
+    {
+      "Sid": "EjecutarSQLConDataAPI",
+      "Effect": "Allow",
+      "Action": [
+        "redshift-data:ExecuteStatement",
+        "redshift-data:BatchExecuteStatement",
+        "redshift-data:DescribeStatement",
+        "redshift-data:GetStatementResult",
+        "redshift-data:ListStatements",
+        "redshift-data:CancelStatement"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecretoAdministradoPorRedshift",
+      "Effect": "Allow",
+      "Action": [
+        "secretsmanager:CreateSecret",
+        "secretsmanager:RotateSecret",
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:UpdateSecret",
+        "secretsmanager:DeleteSecret",
+        "secretsmanager:TagResource",
+        "secretsmanager:GetSecretValue"
+      ],
+      "Resource": "arn:aws:secretsmanager:us-east-2:807872461370:secret:redshift!*"
+    },
+    {
+      "Sid": "GenerarContrasenaDelAdmin",
+      "Effect": "Allow",
+      "Action": "secretsmanager:GetRandomPassword",
+      "Resource": "*"
+    },
+    {
+      "Sid": "PasarRolDeLecturaS3ARedshift",
+      "Effect": "Allow",
+      "Action": "iam:PassRole",
+      "Resource": "arn:aws:iam::807872461370:role/p5-redshift-s3-role",
+      "Condition": {
+        "StringLike": {
+          "iam:PassedToService": [
+            "redshift.amazonaws.com",
+            "redshift-serverless.amazonaws.com"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "RolVinculadoDeRedshift",
+      "Effect": "Allow",
+      "Action": "iam:CreateServiceLinkedRole",
+      "Resource": "*",
+      "Condition": {
+        "StringLike": {
+          "iam:AWSServiceName": [
+            "redshift.amazonaws.com",
+            "redshift-serverless.amazonaws.com"
+          ]
+        }
+      }
+    }
+  ]
+}

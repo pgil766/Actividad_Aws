@@ -1,0 +1,52 @@
+$ python punto5_redshift/redshift_pipeline.py
+Identidad AWS: arn:aws:iam::807872461370:user/user_cli
+Workgroup:     p5-workgroup · base de datos actividad
+Secreto admin: arn:aws:secretsmanager:us-east-2:807872461370:secret:redshift!p5-namespace-rsadmin-AZJviR
+Rol para COPY: arn:aws:iam::807872461370:role/p5-redshift-s3-role
+
+S3: s3://actividad-aws-p5-807872461370/datos/clientes.csv
+S3: s3://actividad-aws-p5-807872461370/datos/pedidos.csv
+
+[FINISHED en 0.05 s] DROP pedidos
+[FINISHED en 0.04 s] DROP clientes
+[FINISHED en 0.20 s] CREATE TABLE clientes
+[FINISHED en 0.34 s] CREATE TABLE pedidos
+[FINISHED en 1.77 s] COPY clientes desde S3
+[FINISHED en 1.14 s] COPY pedidos desde S3
+
+== Validación de la carga
+   Pregunta: ¿Cuántas filas se cargaron en cada tabla?
+   tabla    | filas
+   ---------+------
+   clientes | 12   
+   pedidos  | 40   
+
+== Consulta 1 · Filtro
+   Pregunta: ¿Qué pedidos de Electrónica superaron 1.000 en el primer semestre de 2026?
+   pedido_id | cliente_id | fecha      | cantidad | monto  
+   ----------+------------+------------+----------+--------
+   1035      | 11         | 2026-04-07 | 4        | 3204.29
+   1012      | 12         | 2026-05-09 | 4        | 2622.91
+   1002      | 8          | 2026-01-06 | 3        | 2287.71
+   1011      | 8          | 2026-04-28 | 4        | 2010.12
+   1021      | 7          | 2026-03-16 | 2        | 1421.33
+   1007      | 7          | 2026-02-16 | 3        | 1267.97
+
+== Consulta 2 · Unión (JOIN)
+   Pregunta: ¿Quiénes hicieron los 5 pedidos más grandes y de qué ciudad y segmento son?
+   pedido_id | nombre      | ciudad       | segmento  | categoria   | monto  
+   ----------+-------------+--------------+-----------+-------------+--------
+   1035      | Karen Ortiz | Cali         | Pyme      | Electrónica | 3204.29
+   1012      | Luis Medina | Medellín     | Pyme      | Electrónica | 2622.91
+   1002      | Hugo Castro | Bogotá       | Minorista | Electrónica | 2287.71
+   1011      | Hugo Castro | Bogotá       | Minorista | Electrónica | 2010.12
+   1021      | Gloria Peña | Barranquilla | Pyme      | Electrónica | 1421.33
+
+== Consulta 3 · Agregación (con JOIN)
+   Pregunta: ¿Cuánto vende cada ciudad, cuántos pedidos hace y cuál es su ticket promedio?
+   ciudad       | clientes_con_pedidos | pedidos | ventas_totales | ticket_promedio
+   -------------+----------------------+---------+----------------+----------------
+   Bogotá       | 3                    | 14      | 8081.02        | 577.21         
+   Medellín     | 4                    | 14      | 6066.65        | 433.33         
+   Cali         | 3                    | 7       | 5531.82        | 790.26         
+   Barranquilla | 2                    | 5       | 4165.98        | 833.19         

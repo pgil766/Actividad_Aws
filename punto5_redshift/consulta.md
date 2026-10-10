@@ -65,7 +65,64 @@ Al crear el namespace se marca **"Manage admin credentials in AWS Secrets Manage
 ## 5. Rol de IAM para `COPY` desde S3
 Se crea un rol con relación de confianza para `redshift.amazonaws.com` y permisos `s3:GetObject` y `s3:ListBucket` **solo sobre el bucket del taller**. Se asocia al namespace, y en `COPY ... IAM_ROLE '<arn>'` (o `IAM_ROLE default`) Redshift lo asume para leer los archivos.
 
-## 6. Preguntas de costos
+## 6. Práctica realizada
+
+### Despliegue
+Todo se creó por AWS CLI con `user_cli` ([crear.sh](crear.sh)):
+- **Namespace** `p5-namespace`:
+  - base de datos `actividad`, admin `rsadmin`;
+  - **contraseña administrada en Secrets Manager** (`--manage-admin-password`), con el secreto `redshift!p5-namespace-rsadmin-…`;
+  - rol por defecto `p5-redshift-s3-role`.
+- **Workgroup** `p5-workgroup`: **4 RPU** (la capacidad base mínima), **sin acceso público** y con las subredes de la VPC por defecto. No hace falta abrir red: la Data API es un servicio HTTPS de AWS autenticado con IAM.
+
+### Permisos necesarios (y una lección aprendida)
+`user_cli` no tenía ningún permiso de Redshift, porque `AmazonRDSFullAccess` no lo cubre. Se le asoció la política administrada `Punto5Redshift` ([iam/politica_user_cli_redshift.json](iam/politica_user_cli_redshift.json)), que permite:
+- `redshift-serverless:*` en Ohio y la Data API;
+- `iam:PassRole` solo para el rol de `COPY`;
+- los permisos de Secrets Manager sobre `redshift!*`.
+
+Se creó como política **administrada** y no inline: IAM limita a **2048 caracteres la suma de todas las políticas inline** de un usuario, y `user_cli` ya tenía cuatro.
+
+Para que Redshift administre la contraseña, quien crea el namespace necesita **7 permisos** de Secrets Manager:
+- `CreateSecret`, `RotateSecret`, `DescribeSecret`, `UpdateSecret`, `DeleteSecret` y `TagResource`;
+- `GetRandomPassword`, con `Resource: "*"`, porque Redshift genera la contraseña con él.
+
+Son más que los 3 que pide RDS. El primer intento falló por falta de permisos ([03_redshift_crear_error_permisos.txt](evidencias/03_redshift_crear_error_permisos.txt)), y **dejó creado un secreto huérfano** (`redshift!p5-namespace-awsadmin`). Ese secreto **no se puede borrar a mano porque es propiedad de Redshift**, y bloqueó el nombre ([03b_…](evidencias/03b_redshift_crear_error_secreto_huerfano.txt)). Se resolvió usando otro usuario admin (`rsadmin`). Al final, **una vez eliminado el namespace, Redshift liberó el secreto huérfano** y se pudo programar su eliminación con `delete-secret`.
+
+**Lección:** revisar en la documentación los permisos exactos de cada servicio antes de crear recursos que generan secretos administrados.
+
+### Rol para `COPY`
+Rol `p5-redshift-s3-role`:
+- **Confianza:** `redshift.amazonaws.com` y `redshift-serverless.amazonaws.com` ([iam/rol_redshift_confianza.json](iam/rol_redshift_confianza.json)).
+- **Permisos:** `s3:GetObject`, `s3:ListBucket` y `s3:GetBucketLocation`, **solo** sobre el bucket del punto ([iam/rol_redshift_permisos_s3.json](iam/rol_redshift_permisos_s3.json)).
+
+Se asoció al namespace como rol por defecto, y el `COPY` lo usa con `IAM_ROLE '<arn>'`.
+
+### Conjunto de datos
+Dos tablas relacionadas, en CSV ([datos/](datos/)):
+
+| Tabla | Filas | Columnas | Diseño en Redshift |
+|---|---|---|---|
+| `clientes` | 12 | `cliente_id` (PK), `nombre`, `ciudad`, `segmento`, `fecha_registro` | `DISTSTYLE ALL`: tabla pequeña, se copia en todos los nodos y así el JOIN no mueve datos |
+| `pedidos` | 40 | `pedido_id` (PK), `cliente_id` (FK → clientes), `fecha`, `categoria`, `cantidad`, `monto` | `DISTKEY (cliente_id)` para el JOIN y `SORTKEY (fecha)` para filtros por fechas |
+
+En Redshift, las PK y FK son **informativas** (no se validan), pero el optimizador las usa.
+
+### Programa ([redshift_pipeline.py](redshift_pipeline.py))
+1. Sube los CSV a `s3://actividad-aws-p5-807872461370/datos/` con Boto3.
+2. Lee del namespace el **ARN del secreto** y el **ARN del rol**, para no escribirlos en el código.
+3. Envía cada sentencia con la **Data API**: `execute_statement(WorkgroupName, Database, SecretArn, Sql)`. Después consulta `describe_statement` hasta que el estado sea `FINISHED` y recupera las filas con `get_statement_result`, paginando.
+4. Ejecuta `DROP`/`CREATE TABLE` y `COPY ... FORMAT AS CSV IGNOREHEADER 1`. Carga **12 y 40 filas**, validadas con `COUNT(*)`.
+
+### Consultas e interpretación ([05_pipeline_resultados.txt](evidencias/05_pipeline_resultados.txt))
+
+| # | Tipo | Pregunta que responde | Resultado e interpretación |
+|---|---|---|---|
+| 1 | **Filtro** (`WHERE` categoría + monto + rango de fechas) | ¿Qué pedidos de Electrónica superaron 1.000 en el primer semestre de 2026? | **6 pedidos**, entre 1.267,97 y 3.204,29. Están concentrados en pocos clientes (8, 7, 11 y 12): los clientes 8 y 7 aparecen dos veces cada uno, lo que sugiere clientes recurrentes de alto valor en esa categoría |
+| 2 | **Unión** (`JOIN` pedidos–clientes) | ¿Quiénes hicieron los 5 pedidos más grandes y de qué ciudad y segmento son? | Los 5 son de **Electrónica**. **Hugo Castro** (Bogotá, Minorista) tiene dos de ellos. 3 de los 5 son clientes **Pyme**, a pesar de ser solo 4 de los 12 clientes, así que es un segmento valioso para campañas de Electrónica |
+| 3 | **Agregación** (`GROUP BY` ciudad con `COUNT`, `SUM` y `AVG`, sobre un JOIN) | ¿Cuánto vende cada ciudad, cuántos pedidos hace y cuál es su ticket promedio? | **Bogotá** lidera en ventas (8.081, 14 pedidos). **Barranquilla** (833) y **Cali** (790) tienen el **ticket promedio más alto** con menos pedidos. **Medellín** tiene más clientes con pedidos (4), pero el ticket más bajo (433). Conclusión: Bogotá destaca por volumen; Barranquilla y Cali, por valor por pedido |
+
+## 7. Preguntas de costos
 
 ### ¿Qué modalidad de Redshift cuesta menos para esta práctica?
 **Serverless.** El cómputo se cobra por segundo solo durante las consultas (≈ USD 0.36–1.00 en total para el taller, cubierto por los créditos de prueba). Un clúster aprovisionado cobra desde USD 0.25–0.54 por **cada hora encendido**, aunque esté inactivo.
@@ -88,6 +145,17 @@ Para el dataset del taller (KB o pocos MB), el almacenamiento es ≈ USD 0.00.
 - Si se hubiera hecho accesible públicamente: una IPv4 pública o un *Elastic IP*.
 
 **Limpieza:** eliminar el workgroup y el namespace (sin snapshot final), el bucket S3 con su contenido, el rol de IAM y verificar que el secreto se eliminó.
+
+### Costo real de la práctica
+| Concepto | Uso | Costo estimado |
+|---|---|---|
+| Cómputo (RPU) | ~15 sentencias de 0,04–1,8 s. Con el mínimo de 60 s por cobro y 4 RPU, del orden de **5–10 minutos facturables** | 4 RPU × ≈0,15 h × USD 0.36 ≈ **USD 0.20** (USD 0 con los créditos de prueba de Redshift Serverless) |
+| Almacenamiento administrado (RMS) | La consola reportó 322 MB, casi todo de tablas de sistema, durante ~1 h | ≈ USD 0.00001 |
+| Secretos (`rsadmin` + el huérfano) | Secretos nuevos con 30 días gratis | USD 0: ambos quedaron programados para eliminación, y un secreto en ese estado no se cobra |
+| S3 (2 CSV de pocos KB) | Unas horas | ≈ USD 0 |
+| **Total** | | **≈ USD 0.20 de referencia; costo real USD 0**: la cuenta usó el **crédito de prueba de USD 300** de Redshift Serverless |
+
+Al terminar se eliminaron el **workgroup**, el **namespace** (sin snapshot final, y con él el secreto del admin) y el **bucket**. El rol IAM y la política no cobran.
 
 ## Fuentes
 - [Amazon Redshift Pricing](https://aws.amazon.com/redshift/pricing/)

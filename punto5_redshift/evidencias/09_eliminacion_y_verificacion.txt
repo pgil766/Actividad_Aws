@@ -1,0 +1,24 @@
+Identidad: arn:aws:iam::807872461370:user/user_cli
+Workgroup p5-workgroup: eliminando...
+Workgroup eliminado
+Namespace p5-namespace: eliminando...
+Namespace eliminado
+S3: bucket actividad-aws-p5-807872461370 eliminado
+
+######## Verificación
+== Workgroup
+aws: [ERROR]: An error occurred (ResourceNotFoundException) when calling the GetWorkgroup operation: Serverless workgroup p5-workgroup not found.
+== Namespace
+aws: [ERROR]: An error occurred (ResourceNotFoundException) when calling the GetNamespace operation: Serverless namespace p5-namespace not found.
+== Snapshots de Redshift Serverless
+0
+== Bucket actividad-aws-p5-807872461370
+aws: [ERROR]: An error occurred (404) when calling the HeadBucket operation: Not Found
+== Secreto del admin arn:aws:secretsmanager:us-east-2:807872461370:secret:redshift!p5-namespace-rsadmin-AZJviR
+redshift!p5-namespace-rsadmin	2026-10-10T12:14:29.360000-05:00
+== Secreto huérfano del primer intento fallido (redshift!p5-namespace-awsadmin)
+redshift!p5-namespace-awsadmin	None
+
+$ aws secretsmanager delete-secret --secret-id "redshift!p5-namespace-awsadmin" --recovery-window-in-days 7
+# Con el namespace ya eliminado, Redshift deja de bloquear el secreto huérfano
+arn:aws:secretsmanager:us-east-2:807872461370:secret:redshift!p5-namespace-awsadmin-VXfR2i	2026-10-17T12:14:49-05:00 (fecha programada de eliminación)
